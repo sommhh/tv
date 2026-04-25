@@ -50,7 +50,7 @@ body{font-family:system-ui,-apple-system,"Noto Sans JP","Hiragino Kaku Gothic Pr
 <span id="autoBadge" class="text-[11px] px-2 py-1 rounded-lg bg-emerald-500/15 text-emerald-300 border border-emerald-800/50"></span>
 </div>
 <div class="relative w-[260px] h-[260px] md:w-[300px] md:h-[300px]">
-<div id="dial" class="absolute inset-0 rounded-full transition-transform duration-200">
+<div id="dial" class="absolute inset-0 rounded-full" style="will-change:transform">
 <div class="absolute inset-0 rounded-full border-[10px] border-zinc-800 bg-[radial-gradient(ellipse_at_center,_#18181b_60%,_#0a0a0b_100%)] shadow-inner"></div>
 <svg class="absolute inset-0 w-full h-full" viewBox="0 0 300 300"><g id="ticks"></g></svg>
 <div class="absolute top-3 left-1/2 -translate-x-1/2 text-red-400 font-bold text-[15px] tracking-widest">N</div>
@@ -185,8 +185,8 @@ dainenji:{id:'dainenji',name:'大年寺山 送信所',lat:38.238472,lon:140.8743
 shibata:{id:'shibata',name:'柴田船迫中継局',lat:38.101,lon:140.822,polarization:'水平',area:'柴田町・名取市(高舘付近)など',channels:[{id:1,name:'TBC',ch:'22ch',power:'50mW'},{id:2,name:'NHK E',ch:'16ch',power:'50mW'},{id:3,name:'NHK G',ch:'18ch',power:'50mW'},{id:4,name:'MMT',ch:'30ch',power:'50mW'},{id:5,name:'KHB',ch:'20ch',power:'50mW'},{id:8,name:'OX',ch:'23ch',power:'50mW'}]},
 akiu:{id:'akiu',name:'秋保中継局',lat:38.222,lon:140.715,polarization:'水平',area:'太白区秋保・川崎町など',channels:[{id:1,name:'TBC',ch:'44ch',power:'300mW'},{id:2,name:'NHK E',ch:'40ch',power:'300mW'},{id:3,name:'NHK G',ch:'42ch',power:'300mW'},{id:4,name:'MMT',ch:'48ch',power:'300mW'},{id:5,name:'KHB',ch:'50ch',power:'300mW'},{id:8,name:'OX',ch:'46ch',power:'300mW'}]}
 };
-const declination=8.2; // 宮城県磁気偏角
-let userLat=38.1710, userLon=140.8920, deviceHeading=0, currentBearing=339.5;
+const declination=8.2;
+let userLat=38.1710, userLon=140.8920, deviceHeading=0, targetHeading=0, currentBearing=339.5;
 
 const $=s=>document.querySelector(s);
 const toRad=d=>d*Math.PI/180, toDeg=r=>r*180/Math.PI;
@@ -202,7 +202,6 @@ const R=6371,dφ=toRad(lat2-lat1),dλ=toRad(lon2-lon1);
 const a=Math.sin(dφ/2)**2+Math.cos(toRad(lat1))*Math.cos(toRad(lat2))*Math.sin(dλ/2)**2;
 return R*2*Math.atan2(Math.sqrt(a),Math.sqrt(1-a));
 }
-// BS/CS 簡易計算 (緯度経度から仰角・方位角を算出)
 function calcSatellite(lat, lon, satLon) {
 const λ = toRad(satLon - lon);
 const φ = toRad(lat);
@@ -227,36 +226,40 @@ $('#detailArea').textContent=st.area;
 $('#channelBody').innerHTML=st.channels.map(c=>`<tr class="hover:bg-zinc-800/40"><td class="px-4 py-2 font-mono text-orange-400">${c.id}</td><td class="px-4 py-2">${c.name}</td><td class="px-4 py-2 font-mono">${c.ch}</td><td class="px-4 py-2 text-zinc-400">${c.power}</td></tr>`).join('');
 $('#mapLink').href=`https://www.google.com/maps?q=${st.lat},${st.lon}`;
 
-// BS/CS 計算更新
 const bs = calcSatellite(userLat, userLon, 110);
-const sp = calcSatellite(userLat, userLon, 124); // プレミアムの124/128中間
+const sp = calcSatellite(userLat, userLon, 124);
 $('#bsAzimuth').textContent = (bs.az - declination).toFixed(1) + '°';
 $('#bsElevation').textContent = bs.el.toFixed(1) + '°';
 $('#spAzimuth').textContent = (sp.az - declination).toFixed(1) + '°';
 $('#spElevation').textContent = sp.el.toFixed(1) + '°';
 
-const needle=$('#needle'),dial=$('#dial');
-needle.style.transform=`translate(-50%,-100%) rotate(${currentBearing - deviceHeading}deg)`;
-dial.style.transform=`rotate(${-deviceHeading}deg)`;
+updateCompass();
+}
+
+function lerpAngle(a,b,t){let d=((b-a+540)%360)-180;return (a+d*t+360)%360}
+function updateCompass(){
+ const needle=$('#needle'),dial=$('#dial');
+ deviceHeading = lerpAngle(deviceHeading, targetHeading, 0.15);
+ needle.style.transform=`translate(-50%,-100%) rotate(${currentBearing - deviceHeading}deg)`;
+ dial.style.transform=`rotate(${-deviceHeading}deg)`;
+ $('#headingVal').textContent=Math.round(deviceHeading)+'°';
+ requestAnimationFrame(updateCompass);
 }
 
 function handleOrientation(e){
-let h=e.webkitCompassHeading;
-if(typeof h==='number'){ deviceHeading=h } else if(e.alpha!=null){ deviceHeading=(360-e.alpha)%360 }
-$('#headingVal').textContent=Math.round(deviceHeading)+'°';
-updateAll();
+ let h=e.webkitCompassHeading;
+ if(typeof h==='number'){ targetHeading=h } else if(e.alpha!=null){ targetHeading=(360-e.alpha)%360 }
 }
 
 document.addEventListener('DOMContentLoaded',()=>{
-// Init Ticks
 let s=''; for(let i=0;i<360;i+=6){
 const r=i%30===0?128:132; const a=toRad(i-90);
 s+=`<line x1="${150+Math.cos(a)*r}" y1="${150+Math.sin(a)*r}" x2="${150+Math.cos(a)*138}" y2="${150+Math.sin(a)*138}" stroke="${i%30===0?'#52525b':'#27272a'}" stroke-width="${i%30===0?1.5:1}"/>`;
 }$('#ticks').innerHTML=s;
 
 updateAll();
+requestAnimationFrame(updateCompass);
 
-// Tab Switch
 document.querySelectorAll('.tabbtn').forEach(b=>b.addEventListener('click',()=>{
 document.querySelectorAll('.tabbtn').forEach(x=>{x.classList.remove('bg-zinc-800','text-white');x.classList.add('text-zinc-400')});
 b.classList.add('bg-zinc-800','text-white'); b.classList.remove('text-zinc-400');
@@ -270,6 +273,7 @@ userLat=p.coords.latitude; userLon=p.coords.longitude;
 $('#locStatus').textContent='取得完了';
 $('#coord').textContent=`${userLat.toFixed(4)}, ${userLon.toFixed(4)}`;
 updateAll();
+requestAnimationFrame(updateCompass);
 });
 });
 
