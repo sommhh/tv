@@ -31,8 +31,8 @@ body{font-family:system-ui,-apple-system,"Noto Sans JP","Hiragino Kaku Gothic Pr
 <div class="text-[11px] text-zinc-500"><span id="coord">38.1710, 140.8920</span> ・ <span id="acc">-</span></div>
 </div>
 <button id="enableCompass" class="hidden ml-auto px-3 py-2 rounded-xl bg-zinc-800 hover:bg-zinc-700 text-xs border border-zinc-700">コンパスを有効化</button>
-<div class="w-full md:w-auto md:ml-auto flex items-center gap-2 text-[11px] text-zinc-500">
-<span>端末向き:</span><span id="headingVal" class="font-mono text-zinc-300">--°</span>
+<div class="w-full md:w-auto md:ml-auto flex items-center gap-3 text-[11px] text-zinc-500">
+<span>端末向き:</span><span id="headingVal" class="font-mono text-zinc-100 text-[18px] font-bold">--°</span>
 </div>
 </div>
 
@@ -58,16 +58,26 @@ body{font-family:system-ui,-apple-system,"Noto Sans JP","Hiragino Kaku Gothic Pr
 <div class="absolute right-4 top-1/2 -translate-y-1/2 text-zinc-600 text-[12px]">E</div>
 <div class="absolute left-4 top-1/2 -translate-y-1/2 text-zinc-600 text-[12px]">W</div>
 </div>
-<div id="needle" class="absolute left-1/2 top-1/2 w-[3px] h-[46%] origin-bottom -translate-x-1/2 -translate-y-full z-10 transition-transform duration-150">
-<div class="w-full h-[75%] bg-gradient-to-b from-red-500 to-red-600 rounded-full shadow-[0_0_18px_rgba(239,68,68,.6)]"></div>
+<!-- 端末向き針（固定・シアン） -->
+<div id="deviceNeedle" class="absolute left-1/2 top-1/2 w-[3px] h-[44%] origin-bottom -translate-x-1/2 -translate-y-full z-10 pointer-events-none">
+<div class="w-full h-full bg-cyan-400 rounded-full shadow-[0_0_12px_rgba(34,211,238,.7)]"></div>
+</div>
+<!-- 送信所針（可変色） -->
+<div id="needle" class="absolute left-1/2 top-1/2 w-[4px] h-[46%] origin-bottom -translate-x-1/2 -translate-y-full z-20 transition-transform duration-150" style="will-change:transform">
+<div id="needleInner" class="w-full h-[75%] bg-gradient-to-b from-red-500 to-red-600 rounded-full shadow-[0_0_18px_rgba(239,68,68,.6)]"></div>
 <div class="w-full h-[25%] bg-zinc-500 mt-0.5 rounded-full opacity-60"></div>
 </div>
-<div class="absolute left-1/2 top-1/2 w-5 h-5 -translate-x-1/2 -translate-y-1/2 rounded-full bg-zinc-200 border-4 border-zinc-900 shadow-xl z-20"></div>
+<div class="absolute left-1/2 top-1/2 w-6 h-6 -translate-x-1/2 -translate-y-1/2 rounded-full bg-zinc-200 border-4 border-zinc-900 shadow-xl z-30"></div>
+<!-- 中心ステータス -->
+<div class="absolute left-1/2 top-[68%] -translate-x-1/2 text-center pointer-events-none">
+<div id="alignStatus" class="text-[11px] px2 py-0.5 rounded font-medium">--</div>
+</div>
 </div>
 <div class="mt-4 text-center">
 <div class="text-[11px] text-zinc-500">送信所方向</div>
-<div class="text-3xl font-[700] tracking-tight"><span id="brgVal">339.5°</span></div>
-<div id="brgJa" class="text-orange-400 text-sm -mt-1">北北西</div>
+<div class="text-[48px] font-[800] tracking-tight leading-none"><span id="brgVal">339.5°</span></div>
+<div id="brgJa" class="text-orange-400 text-[15px] mt-1 font-medium">北北西</div>
+<div class="mt-2 text-[12px] text-zinc-500">端末 <span id="headingValBig" class="text-zinc-200 font-mono">--°</span> → 合わせる</div>
 </div>
 </div>
 <div class="lg:col-span-3 flex flex-col gap-4">
@@ -78,6 +88,8 @@ body{font-family:system-ui,-apple-system,"Noto Sans JP","Hiragino Kaku Gothic Pr
 <option value="dainenji">大年寺山 送信所（仙台本局）</option>
 <option value="shibata">柴田船迫中継局</option>
 <option value="akiu">秋保中継局</option>
+<option value="bs110">BS / 110°CS (110°E)</option>
+<option value="premium">スカパー！プレミアム (124°E)</option>
 </select>
 <div class="mt-4 grid grid-cols-3 gap-3">
 <div class="bg-zinc-950 rounded-2xl border border-zinc-800 p-3.5 text-center">
@@ -212,7 +224,10 @@ return { az: azimuth, el: elevation };
 
 function updateAll(){
 const sel=$('#stationSelect').value;
-let st=(sel==='auto')? stations.dainenji : stations[sel];
+let st;
+if(sel==='auto'){ st = stations.dainenji; }
+else if(sel==='bs110' || sel==='premium'){ st = null; }
+else { st = stations[sel]; }
 const trueBrg=bearing(userLat,userLon,st.lat,st.lon);
 currentBearing=(trueBrg - declination + 360)%360;
 
@@ -232,17 +247,28 @@ $('#bsAzimuth').textContent = (bs.az - declination).toFixed(1) + '°';
 $('#bsElevation').textContent = bs.el.toFixed(1) + '°';
 $('#spAzimuth').textContent = (sp.az - declination).toFixed(1) + '°';
 $('#spElevation').textContent = sp.el.toFixed(1) + '°';
-
-updateCompass();
 }
 
 function lerpAngle(a,b,t){let d=((b-a+540)%360)-180;return (a+d*t+360)%360}
 function updateCompass(){
- const needle=$('#needle'),dial=$('#dial');
+ const needle=$('#needle'), dial=$('#dial'), needleInner=$('#needleInner'), status=$('#alignStatus');
  deviceHeading = lerpAngle(deviceHeading, targetHeading, 0.15);
+ const diff = Math.abs(((currentBearing - deviceHeading + 540)%360)-180);
+ const absDiff = diff>180?360-diff:diff;
+ 
+ // 色分け
+ let color, statusText, statusClass;
+ if(absDiff < 2){ color='from-green-400 to-green-600'; statusText='OK ピッタリ'; statusClass='bg-green-500/20 text-green-300 border-green-500/30'; }
+ else if(absDiff < 8){ color='from-yellow-400 to-amber-500'; statusText='もう少し'; statusClass='bg-amber-500/20 text-amber-300 border-amber-500/30'; }
+ else { color='from-red-500 to-red-600'; statusText='ずれてる'; statusClass='bg-red-500/20 text-red-300 border-red-500/30'; }
+ needleInner.className = `w-full h-[75%] bg-gradient-to-b ${color} rounded-full shadow-[0_0_18px_rgba(239,68,68,.6)]`;
+ status.textContent = statusText + ` (${absDiff.toFixed(1)}°)`;
+ status.className = `text-[11px] px2 py-0.5 rounded font-medium border ${statusClass}`;
+ 
  needle.style.transform=`translate(-50%,-100%) rotate(${currentBearing - deviceHeading}deg)`;
  dial.style.transform=`rotate(${-deviceHeading}deg)`;
  $('#headingVal').textContent=Math.round(deviceHeading)+'°';
+ $('#headingValBig').textContent=Math.round(deviceHeading)+'°';
  requestAnimationFrame(updateCompass);
 }
 
@@ -273,7 +299,6 @@ userLat=p.coords.latitude; userLon=p.coords.longitude;
 $('#locStatus').textContent='取得完了';
 $('#coord').textContent=`${userLat.toFixed(4)}, ${userLon.toFixed(4)}`;
 updateAll();
-requestAnimationFrame(updateCompass);
 });
 });
 
