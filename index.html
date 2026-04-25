@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>宮城県 アンテナ方向チェッカー v2.1</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+html{-webkit-text-size-adjust:100%}
+body{font-family:system-ui,-apple-system,"Noto Sans JP","Hiragino Kaku Gothic ProN","Yu Gothic UI",sans-serif}
+.glass{background:rgba(24,24,27,.7);backdrop-filter:blur(12px)}
+</style>
+</head>
+<body class="bg-[#070708] text-zinc-100 min-h-screen selection:bg-orange-500/30 selection:text-orange-200">
+<div class="max-w-[1060px] mx-auto px-4 py-5 md:py-8">
+<header class="flex items-start justify-between gap-4 mb-5">
+<div>
+<h1 class="text-[26px] md:text-[32px] font-[750] tracking-tight leading-tight">宮城県 アンテナ方向チェッカー <span class="text-orange-500">v2.1</span></h1>
+<p class="text-zinc-400 text-[13px] mt-1">地デジ・BS/CS完全対応 | 名取・仙台エリア最適化</p>
+</div>
+<div class="hidden md:flex items-center gap-2 text-[11px] text-zinc-500">
+<span class="px-2 py-1 rounded-lg bg-zinc-900 border-zinc-800">水平偏波(地デジ)</span>
+<span class="px-2 py-1 rounded-lg bg-zinc-900 border border-zinc-800">磁気偏角補正 8.2°W</span>
+</div>
+</header>
+
+<div class="glass border border-zinc-800 rounded-2xl p-3 md:p-4 flex flex-wrap items-center gap-3 mb-4">
+<button id="locBtn" class="px-3.5 py-2.5 rounded-xl bg-orange-600 hover:bg-orange-500 active:bg-orange-700 font-medium text-sm shadow-[0_0_20px_rgba(234,88,12,.25)] transition">現在地を取得</button>
+<div class="min-w-0">
+<div id="locStatus" class="text-[13px] text-zinc-300 truncate">未取得 — 名取市役所付近で表示中</div>
+<div class="text-[11px] text-zinc-500"><span id="coord">38.1710, 140.8920</span> ・ <span id="acc">-</span></div>
+</div>
+<button id="enableCompass" class="hidden ml-auto px-3 py-2 rounded-xl bg-zinc-800 hover:bg-zinc-700 text-xs border border-zinc-700">コンパスを有効化</button>
+<div class="w-full md:w-auto md:ml-auto flex items-center gap-2 text-[11px] text-zinc-500">
+<span>端末向き:</span><span id="headingVal" class="font-mono text-zinc-300">--°</span>
+</div>
+</div>
+
+<div class="flex gap-1 p-1 bg-zinc-900 border border-zinc-800 rounded-2xl w-full md:w-auto mb-4">
+<button data-tab="main" class="tabbtn px-4 py-2 rounded-xl text-sm font-medium bg-zinc-800 text-white">アンテナ方角</button>
+<button data-tab="detail" class="tabbtn px-4 py-2 rounded-xl text-sm font-medium text-zinc-400 hover:text-zinc-200">地デジ詳細</button>
+<button data-tab="bs" class="tabbtn px-4 py-2 rounded-xl text-sm font-medium text-zinc-400 hover:text-zinc-200">BS/CS・プレミアム</button>
+</div>
+
+<section data-pane="main">
+<div class="grid lg:grid-cols-5 gap-4">
+<div class="lg:col-span-2 glass border border-zinc-800 rounded-[24px] p-5 md:p-6 flex flex-col items-center">
+<div class="w-full flex items-center justify-between mb-3">
+<h2 class="font-semibold">送信方向コンパス</h2>
+<span id="autoBadge" class="text-[11px] px-2 py-1 rounded-lg bg-emerald-500/15 text-emerald-300 border border-emerald-800/50"></span>
+</div>
+<div class="relative w-[260px] h-[260px] md:w-[300px] md:h-[300px]">
+<div id="dial" class="absolute inset-0 rounded-full transition-transform duration-200">
+<div class="absolute inset-0 rounded-full border-[10px] border-zinc-800 bg-[radial-gradient(ellipse_at_center,_#18181b_60%,_#0a0a0b_100%)] shadow-inner"></div>
+<svg class="absolute inset-0 w-full h-full" viewBox="0 0 300 300"><g id="ticks"></g></svg>
+<div class="absolute top-3 left-1/2 -translate-x-1/2 text-red-400 font-bold text-[15px] tracking-widest">N</div>
+<div class="absolute bottom-3 left-1/2 -translate-x-1/2 text-zinc-600 text-[12px]">S</div>
+<div class="absolute right-4 top-1/2 -translate-y-1/2 text-zinc-600 text-[12px]">E</div>
+<div class="absolute left-4 top-1/2 -translate-y-1/2 text-zinc-600 text-[12px]">W</div>
+</div>
+<div id="needle" class="absolute left-1/2 top-1/2 w-[3px] h-[46%] origin-bottom -translate-x-1/2 -translate-y-full z-10 transition-transform duration-150">
+<div class="w-full h-[75%] bg-gradient-to-b from-red-500 to-red-600 rounded-full shadow-[0_0_18px_rgba(239,68,68,.6)]"></div>
+<div class="w-full h-[25%] bg-zinc-500 mt-0.5 rounded-full opacity-60"></div>
+</div>
+<div class="absolute left-1/2 top-1/2 w-5 h-5 -translate-x-1/2 -translate-y-1/2 rounded-full bg-zinc-200 border-4 border-zinc-900 shadow-xl z-20"></div>
+</div>
+<div class="mt-4 text-center">
+<div class="text-[11px] text-zinc-500">送信所方向</div>
+<div class="text-3xl font-[700] tracking-tight"><span id="brgVal">339.5°</span></div>
+<div id="brgJa" class="text-orange-400 text-sm -mt-1">北北西</div>
+</div>
+</div>
+<div class="lg:col-span-3 flex flex-col gap-4">
+<div class="glass border border-zinc-800 rounded-[24px] p-5">
+<label class="block text-[12px] text-zinc-400 mb-2">送信所・中継局を選ぶ</label>
+<select id="stationSelect" class="w-full bg-zinc-950 border border-zinc-700 rounded-xl px-3.5 py-3 text-[15px] outline-none focus:border-orange-500/60 focus:ring-2 focus:ring-orange-500/20">
+<option value="auto">自動選択（現在地から最適）</option>
+<option value="dainenji">大年寺山 送信所（仙台本局）</option>
+<option value="shibata">柴田船迫中継局</option>
+<option value="akiu">秋保中継局</option>
+</select>
+<div class="mt-4 grid grid-cols-3 gap-3">
+<div class="bg-zinc-950 rounded-2xl border border-zinc-800 p-3.5 text-center">
+<div class="text-[11px] text-zinc-500">距離</div>
+<div id="distVal" class="text-[20px] font-semibold mt-1">8.6 km</div>
+</div>
+<div class="bg-zinc-950 rounded-2xl border border-zinc-800 p-3.5 text-center">
+<div class="text-[11px] text-zinc-500">推奨偏波</div>
+<div class="text-[20px] font-semibold mt-1">水平</div>
+</div>
+<div class="bg-zinc-950 rounded-2xl border border-zinc-800 p-3.5 text-center">
+<div class="text-[11px] text-zinc-500">エリア</div>
+<div class="text-[12px] text-zinc-300 mt-1.5 leading-snug line-clamp-2" id="stationArea">仙台・名取…</div>
+</div>
+</div>
+<div class="mt-4 flex items-center justify-between">
+<div>
+<div id="stationName" class="text-lg font-semibold">大年寺山 送信所</div>
+<div class="text-[11px] text-zinc-500">磁気偏角補正済(8.2°W)</div>
+</div>
+<a id="mapLink" target="_blank" class="text-[12px] px-3 py-1.5 rounded-lg bg-zinc-800 hover:bg-zinc-700 border border-zinc-700">地図で開く</a>
+</div>
+</div>
+</div>
+</div>
+</section>
+
+<section data-pane="detail" class="hidden">
+<div class="glass border border-zinc-800 rounded-[24px] p-5">
+<h2 id="detailStationName" class="text-[20px] font-bold">大年寺山 送信所</h2>
+<p id="detailArea" class="text-zinc-400 text-sm mb-4">--</p>
+<div class="overflow-hidden rounded-xl border border-zinc-800">
+<table class="w-full text-[14px]">
+<thead class="bg-zinc-950/80 text-zinc-400 text-[12px]">
+<tr class="border-b border-zinc-800">
+<th class="text-left px-4 py-2">ID</th>
+<th class="text-left px-4 py-2">放送局</th>
+<th class="text-left px-4 py-2">ch</th>
+<th class="text-left px-4 py-2">出力</th>
+</tr>
+</thead>
+<tbody id="channelBody" class="divide-y divide-zinc-800/70"></tbody>
+</table>
+</div>
+</div>
+</section>
+
+<section data-pane="bs" class="hidden">
+<div class="grid md:grid-cols-2 gap-4">
+<div class="glass border border-zinc-800 rounded-[24px] p-5">
+<h3 class="text-[17px] font-semibold flex items-center gap-2">BS / 110°CS <span class="text-[11px] px-2 py-0.5 rounded bg-zinc-800 border border-zinc-700 text-zinc-300">南南西</span></h3>
+<div class="mt-4 flex gap-5">
+<div class="flex-1">
+<div class="text-[12px] text-zinc-500">方位角（磁北）</div>
+<div id="bsAzimuth" class="text-[28px] font-bold leading-none mt-1">202.4°</div>
+<div class="text-[12px] text-zinc-500 mt-4">仰角（宮城）</div>
+<div id="bsElevation" class="text-[28px] font-bold leading-none mt-1 text-orange-400">38.4°</div>
+</div>
+<div class="w-[140px] h-[100px] bg-zinc-950 rounded-xl border border-zinc-800 flex flex-col items-center justify-center">
+<div class="text-[10px] text-zinc-500 mb-1 font-bold">仰角イメージ</div>
+<svg viewBox="0 0 100 60" class="w-16">
+<line x1="0" y1="50" x2="100" y2="50" stroke="#333" stroke-width="2"/>
+<line x1="20" y1="50" x2="80" y2="10" stroke="#f97316" stroke-width="3" id="bsLine"/>
+<circle cx="20" cy="50" r="3" fill="#f97316"/>
+</svg>
+</div>
+</div>
+<p class="text-[12px] text-zinc-400 mt-4">午後2時の太陽の方向に合わせるのが目安。110度CS（スカパー！）も同じ方向です。</p>
+</div>
+
+<div class="glass border border-zinc-800 rounded-[24px] p-5">
+<h3 class="text-[17px] font-semibold flex items-center gap-2">スカパー！プレミアム <span class="text-[11px] px-2 py-0.5 rounded bg-zinc-800 border border-zinc-700 text-zinc-300">124/128°E</span></h3>
+<div class="mt-4 flex gap-5">
+<div class="flex-1">
+<div class="text-[12px] text-zinc-500">方位角（磁北）</div>
+<div id="spAzimuth" class="text-[28px] font-bold leading-none mt-1">210.8°</div>
+<div class="text-[12px] text-zinc-500 mt-4">仰角（宮城）</div>
+<div id="spElevation" class="text-[28px] font-bold leading-none mt-1 text-sky-400">34.1°</div>
+</div>
+<div class="w-[140px] h-[100px] bg-zinc-950 rounded-xl border border-zinc-800 flex flex-col items-center justify-center">
+<div class="text-[10px] text-zinc-500 mb-1 font-bold">仰角イメージ</div>
+<svg viewBox="0 0 100 60" class="w-16">
+<line x1="0" y1="50" x2="100" y2="50" stroke="#333" stroke-width="2"/>
+<line x1="20" y1="50" x2="80" y2="20" stroke="#38bdf8" stroke-width="3" id="spLine"/>
+<circle cx="20" cy="50" r="3" fill="#38bdf8"/>
+</svg>
+</div>
+</div>
+<p class="text-[12px] text-zinc-400 mt-4">BSよりもさらに西（右）に振り、少し寝かせます。マルチアンテナ使用時は調整が非常にシビアです。</p>
+</div>
+</div>
+<div class="mt-4 glass border border-amber-900/40 bg-amber-950/10 rounded-2xl p-4 text-[12px] text-amber-200/90">
+<strong>名取・仙台での注意：</strong> 仰角（上下）を合わせないと絶対に映りません。地デジ（大年寺山）はほぼ真北ですが、衛星は真南より20〜30度西です。
+</div>
+</section>
+
+<footer class="mt-10 pt-6 border-t border-zinc-900 text-[11px] leading-relaxed text-zinc-500">
+<p>© Antenna Checker v2.1 / 磁気偏角補正済み</p>
+</footer>
+</div>
+
+<script>
+const stations = {
+dainenji:{id:'dainenji',name:'大年寺山 送信所',lat:38.238472,lon:140.874306,polarization:'水平',area:'仙台市・名取市・岩沼市・多賀城市など',channels:[{id:1,name:'TBC東北放送',ch:'19ch',power:'3kW'},{id:2,name:'NHK Eテレ仙台',ch:'13ch',power:'3kW'},{id:3,name:'NHK総合・仙台',ch:'17ch',power:'3kW'},{id:4,name:'MMT宮城テレビ',ch:'24ch',power:'3kW'},{id:5,name:'KHB東日本放送',ch:'28ch',power:'3kW'},{id:8,name:'OX仙台放送',ch:'21ch',power:'3kW'}]},
+shibata:{id:'shibata',name:'柴田船迫中継局',lat:38.101,lon:140.822,polarization:'水平',area:'柴田町・名取市(高舘付近)など',channels:[{id:1,name:'TBC',ch:'22ch',power:'50mW'},{id:2,name:'NHK E',ch:'16ch',power:'50mW'},{id:3,name:'NHK G',ch:'18ch',power:'50mW'},{id:4,name:'MMT',ch:'30ch',power:'50mW'},{id:5,name:'KHB',ch:'20ch',power:'50mW'},{id:8,name:'OX',ch:'23ch',power:'50mW'}]},
+akiu:{id:'akiu',name:'秋保中継局',lat:38.222,lon:140.715,polarization:'水平',area:'太白区秋保・川崎町など',channels:[{id:1,name:'TBC',ch:'44ch',power:'300mW'},{id:2,name:'NHK E',ch:'40ch',power:'300mW'},{id:3,name:'NHK G',ch:'42ch',power:'300mW'},{id:4,name:'MMT',ch:'48ch',power:'300mW'},{id:5,name:'KHB',ch:'50ch',power:'300mW'},{id:8,name:'OX',ch:'46ch',power:'300mW'}]}
+};
+const declination=8.2; // 宮城県磁気偏角
+let userLat=38.1710, userLon=140.8920, deviceHeading=0, currentBearing=339.5;
+
+const $=s=>document.querySelector(s);
+const toRad=d=>d*Math.PI/180, toDeg=r=>r*180/Math.PI;
+
+function bearing(lat1,lon1,lat2,lon2){
+const φ1=toRad(lat1),φ2=toRad(lat2),dλ=toRad(lon2-lon1);
+const y=Math.sin(dλ)*Math.cos(φ2);
+const x=Math.cos(φ1)*Math.sin(φ2)-Math.sin(φ1)*Math.cos(φ2)*Math.cos(dλ);
+return (toDeg(Math.atan2(y,x))+360)%360;
+}
+function distance(lat1,lon1,lat2,lon2){
+const R=6371,dφ=toRad(lat2-lat1),dλ=toRad(lon2-lon1);
+const a=Math.sin(dφ/2)**2+Math.cos(toRad(lat1))*Math.cos(toRad(lat2))*Math.sin(dλ/2)**2;
+return R*2*Math.atan2(Math.sqrt(a),Math.sqrt(1-a));
+}
+// BS/CS 簡易計算 (緯度経度から仰角・方位角を算出)
+function calcSatellite(lat, lon, satLon) {
+const λ = toRad(satLon - lon);
+const φ = toRad(lat);
+const azimuth = toDeg(Math.atan2(Math.tan(λ), Math.sin(φ))) + 180;
+const elevation = toDeg(Math.atan2(Math.cos(λ) * Math.cos(φ) - 0.151, Math.sqrt(1 - Math.pow(Math.cos(λ) * Math.cos(φ), 2))));
+return { az: azimuth, el: elevation };
+}
+
+function updateAll(){
+const sel=$('#stationSelect').value;
+let st=(sel==='auto')? stations.dainenji : stations[sel];
+const trueBrg=bearing(userLat,userLon,st.lat,st.lon);
+currentBearing=(trueBrg - declination + 360)%360;
+
+$('#stationName').textContent=st.name;
+$('#brgVal').textContent=currentBearing.toFixed(1)+'°';
+$('#brgJa').textContent=['北','北北東','北東','東北東','東','東南東','南東','南南東','南','南南西','南西','西南西','西','西北西','北西','北北西','北'][Math.round(currentBearing/22.5)%16];
+$('#distVal').textContent=distance(userLat,userLon,st.lat,st.lon).toFixed(1)+' km';
+$('#stationArea').textContent=st.area;
+$('#detailStationName').textContent=st.name;
+$('#detailArea').textContent=st.area;
+$('#channelBody').innerHTML=st.channels.map(c=>`<tr class="hover:bg-zinc-800/40"><td class="px-4 py-2 font-mono text-orange-400">${c.id}</td><td class="px-4 py-2">${c.name}</td><td class="px-4 py-2 font-mono">${c.ch}</td><td class="px-4 py-2 text-zinc-400">${c.power}</td></tr>`).join('');
+$('#mapLink').href=`https://www.google.com/maps?q=${st.lat},${st.lon}`;
+
+// BS/CS 計算更新
+const bs = calcSatellite(userLat, userLon, 110);
+const sp = calcSatellite(userLat, userLon, 124); // プレミアムの124/128中間
+$('#bsAzimuth').textContent = (bs.az - declination).toFixed(1) + '°';
+$('#bsElevation').textContent = bs.el.toFixed(1) + '°';
+$('#spAzimuth').textContent = (sp.az - declination).toFixed(1) + '°';
+$('#spElevation').textContent = sp.el.toFixed(1) + '°';
+
+const needle=$('#needle'),dial=$('#dial');
+needle.style.transform=`translate(-50%,-100%) rotate(${currentBearing - deviceHeading}deg)`;
+dial.style.transform=`rotate(${-deviceHeading}deg)`;
+}
+
+function handleOrientation(e){
+let h=e.webkitCompassHeading;
+if(typeof h==='number'){ deviceHeading=h } else if(e.alpha!=null){ deviceHeading=(360-e.alpha)%360 }
+$('#headingVal').textContent=Math.round(deviceHeading)+'°';
+updateAll();
+}
+
+document.addEventListener('DOMContentLoaded',()=>{
+// Init Ticks
+let s=''; for(let i=0;i<360;i+=6){
+const r=i%30===0?128:132; const a=toRad(i-90);
+s+=`<line x1="${150+Math.cos(a)*r}" y1="${150+Math.sin(a)*r}" x2="${150+Math.cos(a)*138}" y2="${150+Math.sin(a)*138}" stroke="${i%30===0?'#52525b':'#27272a'}" stroke-width="${i%30===0?1.5:1}"/>`;
+}$('#ticks').innerHTML=s;
+
+updateAll();
+
+// Tab Switch
+document.querySelectorAll('.tabbtn').forEach(b=>b.addEventListener('click',()=>{
+document.querySelectorAll('.tabbtn').forEach(x=>{x.classList.remove('bg-zinc-800','text-white');x.classList.add('text-zinc-400')});
+b.classList.add('bg-zinc-800','text-white'); b.classList.remove('text-zinc-400');
+document.querySelectorAll('[data-pane]').forEach(p=>p.classList.toggle('hidden',p.dataset.pane!==b.dataset.tab));
+}));
+
+$('#stationSelect').addEventListener('change',updateAll);
+$('#locBtn').addEventListener('click',()=>{
+navigator.geolocation.getCurrentPosition(p=>{
+userLat=p.coords.latitude; userLon=p.coords.longitude;
+$('#locStatus').textContent='取得完了';
+$('#coord').textContent=`${userLat.toFixed(4)}, ${userLon.toFixed(4)}`;
+updateAll();
+});
+});
+
+if('DeviceOrientationEvent' in window){
+if(typeof DeviceOrientationEvent.requestPermission==='function'){
+$('#enableCompass').classList.remove('hidden');
+$('#enableCompass').onclick=async()=>{if(await DeviceOrientationEvent.requestPermission()==='granted'){window.addEventListener('deviceorientation',handleOrientation,true);$('#enableCompass').classList.add('hidden')}};
+}else{ window.addEventListener('deviceorientation',handleOrientation,true); }
+}
+});
+</script>
+</body>
+</html>
