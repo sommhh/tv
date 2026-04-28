@@ -447,10 +447,10 @@ svg{display:inline-block}
           </div>
 
           <div class="pref-filters" id="prefFilters">
-            <button class="pref-btn active" data-pref="all" onclick="setPref('all')">ALL</button>
-            <button class="pref-btn" data-pref="miyagi" onclick="setPref('miyagi')">宮城</button>
+            <button class="pref-btn active" data-pref="miyagi" onclick="setPref('miyagi')">宮城</button>
             <button class="pref-btn" data-pref="fukushima" onclick="setPref('fukushima')">福島</button>
             <button class="pref-btn" data-pref="yamagata" onclick="setPref('yamagata')">山形</button>
+            <button class="pref-btn" data-pref="satellite" onclick="setPref('satellite')">衛星</button>
           </div>
 
           <div class="station-list" id="stationList"></div>
@@ -789,7 +789,7 @@ let rawHeading = null;
 let deviceHeading = null;
 let selectedKey = 'dainenji';
 let autoSelect = false;
-let prefFilter = 'all';
+let prefFilter = 'miyagi';
 let isObstacleBlocked = false;
 let compassAvailable = false;
 let needsPermission = false;
@@ -1050,7 +1050,9 @@ function updateFooter(){
 // ============================================================
 function renderStationList(){
   const list = document.getElementById('stationList');
-  const stations = Object.values(STATIONS).filter(s => prefFilter === 'all' || s.prefecture === prefFilter);
+  const stations = prefFilter === 'satellite'
+    ? []
+    : Object.values(STATIONS).filter(s => s.prefecture === prefFilter);
   
   let html = stations.map(st => `
     <button class="station-item ${selectedKey === st.id ? 'active' : ''}"
@@ -1066,20 +1068,19 @@ function renderStationList(){
     </button>
   `).join('');
 
-  if(prefFilter === 'all'){
-    html += `
-      <div class="sat-grid">
-        <button class="sat-btn bs ${selectedKey==='bs110'?'active':''}" onclick="selectStation('bs110')">
-          <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M5 12h.01M12 12h.01M19 12h.01M6 12a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0z"/><path stroke-linecap="round" stroke-linejoin="round" d="M8.111 16.404a5.5 5.5 0 017.778 0M12 20h.01M3.111 10.404a10.5 10.5 0 0117.778 0"/></svg>
-          <div class="sat-btn-label">BS / 110CS</div>
-        </button>
-        <button class="sat-btn premium ${selectedKey==='premium'?'active':''}" onclick="selectStation('premium')">
-          <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M5 12h.01M12 12h.01M19 12h.01M6 12a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0z"/><path stroke-linecap="round" stroke-linejoin="round" d="M8.111 16.404a5.5 5.5 0 017.778 0M12 20h.01M3.111 10.404a10.5 10.5 0 0117.778 0"/></svg>
-          <div class="sat-btn-label">Premium</div>
-        </button>
-      </div>
-    `;
-  }
+  html += `
+    <div style="font-size:10px;font-weight:700;color:var(--text3);letter-spacing:.1em;text-transform:uppercase;margin-top:16px;margin-bottom:6px;padding-left:2px">衛星</div>
+    <div class="sat-grid">
+      <button class="sat-btn bs ${selectedKey==='bs110'?'active':''}" onclick="selectStation('bs110')">
+        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M5 12h.01M12 12h.01M19 12h.01M6 12a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0z"/><path stroke-linecap="round" stroke-linejoin="round" d="M8.111 16.404a5.5 5.5 0 017.778 0M12 20h.01M3.111 10.404a10.5 10.5 0 0117.778 0"/></svg>
+        <div class="sat-btn-label">BS / 110CS</div>
+      </button>
+      <button class="sat-btn premium ${selectedKey==='premium'?'active':''}" onclick="selectStation('premium')">
+        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M5 12h.01M12 12h.01M19 12h.01M6 12a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0z"/><path stroke-linecap="round" stroke-linejoin="round" d="M8.111 16.404a5.5 5.5 0 017.778 0M12 20h.01M3.111 10.404a10.5 10.5 0 0117.778 0"/></svg>
+        <div class="sat-btn-label">Premium</div>
+      </button>
+    </div>
+  `;
   list.innerHTML = html;
 }
 
