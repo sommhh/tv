@@ -285,10 +285,10 @@ h1 span{color:var(--orange)}
 .detail-head p{color:var(--text2);font-size:13px}
 .ch-table{width:100%;border-collapse:collapse;overflow-x:auto;display:block}
 thead{background:var(--bg)}
-thead th{padding:12px 32px;font-size:10px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.1em;white-space:nowrap;text-align:left}
+thead th{padding:8px 16px;font-size:10px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.1em;white-space:nowrap;text-align:left}
 tbody tr{border-top:1px solid var(--border);transition:background .1s}
 tbody tr:hover{background:rgba(42,42,46,.3)}
-tbody td{padding:18px 32px;white-space:nowrap}
+tbody td{padding:10px 16px;white-space:nowrap}
 .ch-id{display:flex;align-items:center;justify-content:center;width:32px;height:32px;border-radius:8px;background:var(--surface2);font-family:monospace;font-weight:700;color:var(--orange)}
 .ch-name{font-weight:700;color:var(--text)}
 .ch-ch{font-family:monospace;color:var(--text2)}
@@ -620,120 +620,120 @@ const STATIONS = {
     id:'dainenji', name:'大年寺山', area:'仙台市太白区', prefecture:'miyagi',
     lat:38.2282, lon:140.8650, polarization:'水平',
     channels:[
-      {id:1,name:'NHK総合',ch:'Ch27',power:'3kW'},
-      {id:2,name:'NHK教育',ch:'Ch13',power:'3kW'},
-      {id:3,name:'TBC東北放送',ch:'Ch22',power:'3kW'},
-      {id:4,name:'MMT宮城テレビ',ch:'Ch17',power:'3kW'},
-      {id:5,name:'KHB東日本放送',ch:'Ch15',power:'3kW'},
-      {id:6,name:'OX仙台放送',ch:'Ch20',power:'3kW'},
+      {id:1, name:'NHK総合・仙台',  ch:'27ch', power:'3kW'},
+      {id:2, name:'NHK教育・仙台',  ch:'13ch', power:'3kW'},
+      {id:3, name:'TBC東北放送',    ch:'22ch', power:'3kW'},
+      {id:4, name:'MMT宮城テレビ',  ch:'17ch', power:'3kW'},
+      {id:5, name:'KHB東日本放送',  ch:'15ch', power:'3kW'},
+      {id:6, name:'OX仙台放送',     ch:'20ch', power:'3kW'},
     ]
   },
   sasamori: {
     id:'sasamori', name:'笹森山', area:'仙台市青葉区', prefecture:'miyagi',
     lat:38.2850, lon:140.7830, polarization:'水平',
     channels:[
-      {id:1,name:'NHK総合',ch:'Ch15',power:'100W'},
-      {id:2,name:'NHK教育',ch:'Ch13',power:'100W'},
-      {id:3,name:'TBC',ch:'Ch17',power:'30W'},
-      {id:4,name:'MMT',ch:'Ch27',power:'30W'},
-      {id:5,name:'KHB',ch:'Ch22',power:'30W'},
-      {id:6,name:'OX',ch:'Ch20',power:'30W'},
+      {id:1, name:'NHK総合',  ch:'15ch', power:'100W'},
+      {id:2, name:'NHK教育',  ch:'13ch', power:'100W'},
+      {id:3, name:'TBC',      ch:'17ch', power:'30W'},
+      {id:4, name:'MMT',      ch:'27ch', power:'30W'},
+      {id:5, name:'KHB',      ch:'22ch', power:'30W'},
+      {id:6, name:'OX',       ch:'20ch', power:'30W'},
     ]
   },
   shibata: {
     id:'shibata', name:'柴田', area:'柴田郡柴田町', prefecture:'miyagi',
     lat:38.0498, lon:140.7650, polarization:'水平',
     channels:[
-      {id:1,name:'NHK総合',ch:'Ch13',power:'100W'},
-      {id:2,name:'NHK教育',ch:'Ch15',power:'100W'},
-      {id:3,name:'TBC',ch:'Ch20',power:'30W'},
-      {id:4,name:'MMT',ch:'Ch22',power:'30W'},
-      {id:5,name:'KHB',ch:'Ch17',power:'30W'},
-      {id:6,name:'OX',ch:'Ch27',power:'30W'},
+      {id:1, name:'NHK総合',  ch:'13ch', power:'100W'},
+      {id:2, name:'NHK教育',  ch:'15ch', power:'100W'},
+      {id:3, name:'TBC',      ch:'20ch', power:'30W'},
+      {id:4, name:'MMT',      ch:'22ch', power:'30W'},
+      {id:5, name:'KHB',      ch:'17ch', power:'30W'},
+      {id:6, name:'OX',       ch:'27ch', power:'30W'},
     ]
   },
   furukawa: {
     id:'furukawa', name:'古川', area:'大崎市古川', prefecture:'miyagi',
     lat:38.5763, lon:140.9553, polarization:'水平',
     channels:[
-      {id:1,name:'NHK総合',ch:'Ch13',power:'1kW'},
-      {id:2,name:'NHK教育',ch:'Ch15',power:'1kW'},
-      {id:3,name:'TBC',ch:'Ch22',power:'300W'},
-      {id:4,name:'MMT',ch:'Ch17',power:'300W'},
-      {id:5,name:'KHB',ch:'Ch20',power:'300W'},
-      {id:6,name:'OX',ch:'Ch27',power:'300W'},
+      {id:1, name:'NHK総合',  ch:'13ch', power:'1kW'},
+      {id:2, name:'NHK教育',  ch:'15ch', power:'1kW'},
+      {id:3, name:'TBC',      ch:'22ch', power:'300W'},
+      {id:4, name:'MMT',      ch:'17ch', power:'300W'},
+      {id:5, name:'KHB',      ch:'20ch', power:'300W'},
+      {id:6, name:'OX',       ch:'27ch', power:'300W'},
     ]
   },
   kesennuma: {
     id:'kesennuma', name:'気仙沼', area:'気仙沼市', prefecture:'miyagi',
     lat:38.9065, lon:141.5693, polarization:'水平',
     channels:[
-      {id:1,name:'NHK総合',ch:'Ch13',power:'300W'},
-      {id:2,name:'NHK教育',ch:'Ch15',power:'300W'},
-      {id:3,name:'TBC',ch:'Ch22',power:'100W'},
-      {id:4,name:'MMT',ch:'Ch17',power:'100W'},
-      {id:5,name:'KHB',ch:'Ch20',power:'100W'},
-      {id:6,name:'OX',ch:'Ch27',power:'100W'},
+      {id:1, name:'NHK総合',  ch:'13ch', power:'300W'},
+      {id:2, name:'NHK教育',  ch:'15ch', power:'300W'},
+      {id:3, name:'TBC',      ch:'22ch', power:'100W'},
+      {id:4, name:'MMT',      ch:'17ch', power:'100W'},
+      {id:5, name:'KHB',      ch:'20ch', power:'100W'},
+      {id:6, name:'OX',       ch:'27ch', power:'100W'},
     ]
   },
   ishinomaki: {
     id:'ishinomaki', name:'石巻', area:'石巻市', prefecture:'miyagi',
     lat:38.4338, lon:141.3023, polarization:'水平',
     channels:[
-      {id:1,name:'NHK総合',ch:'Ch13',power:'1kW'},
-      {id:2,name:'NHK教育',ch:'Ch15',power:'1kW'},
-      {id:3,name:'TBC',ch:'Ch22',power:'300W'},
-      {id:4,name:'MMT',ch:'Ch17',power:'300W'},
-      {id:5,name:'KHB',ch:'Ch20',power:'300W'},
-      {id:6,name:'OX',ch:'Ch27',power:'300W'},
+      {id:1, name:'NHK総合',  ch:'13ch', power:'1kW'},
+      {id:2, name:'NHK教育',  ch:'15ch', power:'1kW'},
+      {id:3, name:'TBC',      ch:'22ch', power:'300W'},
+      {id:4, name:'MMT',      ch:'17ch', power:'300W'},
+      {id:5, name:'KHB',      ch:'20ch', power:'300W'},
+      {id:6, name:'OX',       ch:'27ch', power:'300W'},
     ]
   },
   fukushima: {
     id:'fukushima', name:'福島', area:'福島市', prefecture:'fukushima',
     lat:37.7607, lon:140.4750, polarization:'水平',
     channels:[
-      {id:1,name:'NHK総合',ch:'Ch13',power:'3kW'},
-      {id:2,name:'NHK教育',ch:'Ch15',power:'3kW'},
-      {id:3,name:'FCT福島中央TV',ch:'Ch19',power:'3kW'},
-      {id:4,name:'FTV福島テレビ',ch:'Ch25',power:'3kW'},
-      {id:5,name:'KFB福島放送',ch:'Ch22',power:'3kW'},
-      {id:6,name:'TUF テレビユー福島',ch:'Ch28',power:'3kW'},
+      {id:1, name:'NHK総合・福島',    ch:'13ch', power:'3kW'},
+      {id:2, name:'NHK教育',         ch:'15ch', power:'3kW'},
+      {id:3, name:'FCT福島中央TV',   ch:'19ch', power:'3kW'},
+      {id:4, name:'FTV福島テレビ',    ch:'25ch', power:'3kW'},
+      {id:5, name:'KFB福島放送',     ch:'22ch', power:'3kW'},
+      {id:6, name:'TUF テレビユー福島',ch:'28ch', power:'3kW'},
     ]
   },
   aizuwakamatsu: {
     id:'aizuwakamatsu', name:'会津若松', area:'会津若松市', prefecture:'fukushima',
     lat:37.4950, lon:139.9290, polarization:'水平',
     channels:[
-      {id:1,name:'NHK総合',ch:'Ch13',power:'1kW'},
-      {id:2,name:'NHK教育',ch:'Ch15',power:'1kW'},
-      {id:3,name:'FCT',ch:'Ch19',power:'300W'},
-      {id:4,name:'FTV',ch:'Ch25',power:'300W'},
-      {id:5,name:'KFB',ch:'Ch22',power:'300W'},
-      {id:6,name:'TUF',ch:'Ch28',power:'300W'},
+      {id:1, name:'NHK総合',  ch:'13ch', power:'1kW'},
+      {id:2, name:'NHK教育',  ch:'15ch', power:'1kW'},
+      {id:3, name:'FCT',      ch:'19ch', power:'300W'},
+      {id:4, name:'FTV',      ch:'25ch', power:'300W'},
+      {id:5, name:'KFB',      ch:'22ch', power:'300W'},
+      {id:6, name:'TUF',      ch:'28ch', power:'300W'},
     ]
   },
   yamagata: {
     id:'yamagata', name:'山形', area:'山形市', prefecture:'yamagata',
     lat:38.2555, lon:140.3398, polarization:'水平',
     channels:[
-      {id:1,name:'NHK総合',ch:'Ch13',power:'3kW'},
-      {id:2,name:'NHK教育',ch:'Ch15',power:'3kW'},
-      {id:3,name:'YBC山形放送',ch:'Ch17',power:'3kW'},
-      {id:4,name:'YTS山形テレビ',ch:'Ch21',power:'3kW'},
-      {id:5,name:'TUY テレビユー山形',ch:'Ch23',power:'3kW'},
-      {id:6,name:'SAY さくらんぼTV',ch:'Ch27',power:'3kW'},
+      {id:1, name:'NHK総合・山形',  ch:'13ch', power:'3kW'},
+      {id:2, name:'NHK教育',       ch:'15ch', power:'3kW'},
+      {id:3, name:'YBC山形放送',   ch:'17ch', power:'3kW'},
+      {id:4, name:'YTS山形テレビ', ch:'21ch', power:'3kW'},
+      {id:5, name:'TUY テレビユー山形',ch:'23ch', power:'3kW'},
+      {id:6, name:'SAY さくらんぼTV',ch:'27ch', power:'3kW'},
     ]
   },
   shinjyo: {
     id:'shinjyo', name:'新庄', area:'新庄市', prefecture:'yamagata',
     lat:38.7630, lon:140.3033, polarization:'水平',
     channels:[
-      {id:1,name:'NHK総合',ch:'Ch13',power:'300W'},
-      {id:2,name:'NHK教育',ch:'Ch15',power:'300W'},
-      {id:3,name:'YBC',ch:'Ch17',power:'100W'},
-      {id:4,name:'YTS',ch:'Ch21',power:'100W'},
-      {id:5,name:'TUY',ch:'Ch23',power:'100W'},
-      {id:6,name:'SAY',ch:'Ch27',power:'100W'},
+      {id:1, name:'NHK総合',  ch:'13ch', power:'300W'},
+      {id:2, name:'NHK教育',  ch:'15ch', power:'300W'},
+      {id:3, name:'YBC',      ch:'17ch', power:'100W'},
+      {id:4, name:'YTS',      ch:'21ch', power:'100W'},
+      {id:5, name:'TUY',      ch:'23ch', power:'100W'},
+      {id:6, name:'SAY',      ch:'27ch', power:'100W'},
     ]
   },
 };
@@ -747,38 +747,49 @@ const SATELLITES = {
 const SAT_CHANNELS = {
   bs110: {
     name: 'BS / 110度CS',
-    desc: 'BS・110度CS デジタル放送',
+    desc: 'BS・110度CS デジタル放送（23ch）',
     channels: [
-      {id:'BS1',  name:'NHK BS',          ch:'BS-1  (107ch)',   power:'100W衛星'},
-      {id:'BS2',  name:'NHK BSプレミアム4K',ch:'BS-3  (103ch)',   power:'100W衛星'},
-      {id:'BS3',  name:'BS日テレ',          ch:'BS-4  (141ch)',   power:'100W衛星'},
-      {id:'BS4',  name:'BS朝日',            ch:'BS-5  (151ch)',   power:'100W衛星'},
-      {id:'BS5',  name:'BS-TBS',           ch:'BS-6  (161ch)',   power:'100W衛星'},
-      {id:'BS6',  name:'BSテレ東',          ch:'BS-7  (171ch)',   power:'100W衛星'},
-      {id:'BS7',  name:'BSフジ',            ch:'BS-8  (181ch)',   power:'100W衛星'},
-      {id:'BS8',  name:'WOWOW プライム',    ch:'BS-9  (191ch)',   power:'100W衛星'},
-      {id:'BS9',  name:'スターチャンネル1', ch:'BS-10 (201ch)',   power:'100W衛星'},
-      {id:'BS10', name:'BS11',             ch:'BS-11 (211ch)',   power:'100W衛星'},
-      {id:'BS11', name:'BS12 トゥエルビ',   ch:'BS-12 (222ch)',   power:'100W衛星'},
-      {id:'CS1',  name:'e2 各CSチャンネル', ch:'110度CS全般',     power:'衛星共用'},
+      {id:'BS1',  name:'NHK BS1',            ch:'BS-1  / 101ch',  power:'衛星放送'},
+      {id:'BS3',  name:'NHK BSプレミアム4K',  ch:'BS-3  / 103ch',  power:'4K衛星'},
+      {id:'BS5',  name:'NHK BS4K(BSP4K)',     ch:'BS-5  / 105ch',  power:'4K衛星'},
+      {id:'BS7',  name:'NHK BS8K',            ch:'BS-7  / 107ch',  power:'8K衛星'},
+      {id:'BS101',name:'BS日テレ',             ch:'BS-4  / 141ch',  power:'衛星放送'},
+      {id:'BS103',name:'BS朝日',              ch:'BS-5  / 151ch',  power:'衛星放送'},
+      {id:'BS105',name:'BS-TBS',             ch:'BS-6  / 161ch',  power:'衛星放送'},
+      {id:'BS107',name:'BSテレ東',            ch:'BS-7  / 171ch',  power:'衛星放送'},
+      {id:'BS109',name:'BSフジ',              ch:'BS-8  / 181ch',  power:'衛星放送'},
+      {id:'BS191',name:'WOWOW プライム',       ch:'BS-9  / 191ch',  power:'衛星放送'},
+      {id:'BS192',name:'WOWOW ライブ',         ch:'BS-9  / 192ch',  power:'衛星放送'},
+      {id:'BS193',name:'WOWOW シネマ',         ch:'BS-9  / 193ch',  power:'衛星放送'},
+      {id:'BS200',name:'スターチャンネル1',    ch:'BS-10 / 201ch',  power:'衛星放送'},
+      {id:'BS202',name:'スターチャンネル2・3', ch:'BS-10 / 202ch',  power:'衛星放送'},
+      {id:'BS211',name:'BS11イレブン',         ch:'BS-11 / 211ch',  power:'衛星放送'},
+      {id:'BS222',name:'BS12 トゥエルビ',      ch:'BS-12 / 222ch',  power:'衛星放送'},
+      {id:'BS231',name:'放送大学BS',           ch:'BS-15 / 231ch',  power:'衛星放送'},
+      {id:'BS233',name:'グリーンチャンネル',   ch:'BS-15 / 233ch',  power:'衛星放送'},
+      {id:'BS236',name:'J SPORTS 1',          ch:'BS-16 / 236ch',  power:'衛星放送'},
+      {id:'BS238',name:'J SPORTS 3',          ch:'BS-16 / 238ch',  power:'衛星放送'},
+      {id:'BS240',name:'BS釣りビジョン',       ch:'BS-17 / 240ch',  power:'衛星放送'},
+      {id:'BS242',name:'日本映画専門ch',       ch:'BS-17 / 242ch',  power:'衛星放送'},
+      {id:'BS255',name:'ショップチャンネル',   ch:'BS-17 / 255ch',  power:'衛星放送'},
     ]
   },
   premium: {
     name: 'スカパー！プレミアム',
     desc: '124/128度CS デジタル放送',
     channels: [
-      {id:'P01', name:'スカイA',           ch:'Ch. 250',  power:'124度CS'},
-      {id:'P02', name:'ゴルフネットワーク', ch:'Ch. 255',  power:'124度CS'},
-      {id:'P03', name:'日テレG+',          ch:'Ch. 257',  power:'124度CS'},
-      {id:'P04', name:'GAORA SPORTS',      ch:'Ch. 258',  power:'124度CS'},
-      {id:'P05', name:'フジテレビNEXT',     ch:'Ch. 334',  power:'124度CS'},
-      {id:'P06', name:'TBSチャンネル1',    ch:'Ch. 324',  power:'124度CS'},
-      {id:'P07', name:'テレ朝チャンネル1', ch:'Ch. 322',  power:'128度CS'},
-      {id:'P08', name:'テレ東チャンネル1', ch:'Ch. 333',  power:'128度CS'},
-      {id:'P09', name:'ムービープラス',     ch:'Ch. 310',  power:'128度CS'},
-      {id:'P10', name:'ホームドラマチャンネル',ch:'Ch. 320', power:'128度CS'},
-      {id:'P11', name:'アニマックス',       ch:'Ch. 317',  power:'128度CS'},
-      {id:'P12', name:'MTV Japan',         ch:'Ch. 351',  power:'128度CS'},
+      {id:'P250', name:'スカイA',              ch:'250ch', power:'124度CS'},
+      {id:'P255', name:'ゴルフネットワーク',   ch:'255ch', power:'124度CS'},
+      {id:'P257', name:'日テレG+',             ch:'257ch', power:'124度CS'},
+      {id:'P258', name:'GAORA SPORTS',         ch:'258ch', power:'124度CS'},
+      {id:'P310', name:'ムービープラス',        ch:'310ch', power:'128度CS'},
+      {id:'P317', name:'アニマックス',          ch:'317ch', power:'128度CS'},
+      {id:'P320', name:'ホームドラマch',        ch:'320ch', power:'128度CS'},
+      {id:'P322', name:'テレ朝チャンネル1',    ch:'322ch', power:'128度CS'},
+      {id:'P324', name:'TBSチャンネル1',       ch:'324ch', power:'128度CS'},
+      {id:'P333', name:'テレ東チャンネル1',    ch:'333ch', power:'128度CS'},
+      {id:'P334', name:'フジテレビNEXT',        ch:'334ch', power:'128度CS'},
+      {id:'P351', name:'MTV Japan',            ch:'351ch', power:'128度CS'},
     ]
   }
 };
@@ -975,8 +986,8 @@ let soundEnabled = false;
 let audioCtx = null;
 let lastSoundState = null;
 let lastPos = null; // ②歩き補正用
-let dirLocked = false; // 方向ロック
-let lockedBearing = null;
+let lockMode = false;      // 方向ロック
+let lockedHeading = null;  // ロック時の基準ヘッディング
 
 // ============================================================
 // COMPUTED
@@ -1008,14 +1019,10 @@ function getSatInfo(){
 }
 
 function getMagneticBearing(){
-  // ロックモード中は固定値を返す
-  if(dirLocked && lockedBearing !== null) return lockedBearing;
-  // 目標は真北基準で計算 → getCorrectedHeading も真北基準なので直接比較OK
   if(selectedKey === 'bs110') return getSatInfo().bs.az;
   if(selectedKey === 'premium') return getSatInfo().premium.az;
   const st = STATIONS[selectedKey];
   if(!st) return 0;
-  // calculateBearing は真北基準
   return calculateBearing(userLoc.lat, userLoc.lon, st.lat, st.lon);
 }
 
@@ -1041,6 +1048,14 @@ function getStationName(){
 function getAlignment(){
   const ch = getCorrectedHeading();
   if(ch === null) return null;
+
+  // ロック時：ロック時点の自分の向きを基準に「自分がどれだけズレたか」
+  if(lockMode && lockedHeading !== null){
+    let diff = ((lockedHeading - ch + 540) % 360) - 180;
+    return diff;
+  }
+
+  // 通常：送信所方向を基準
   const mb = getMagneticBearing();
   let diff = ((mb - ch + 540) % 360) - 180;
   return diff;
@@ -1491,15 +1506,15 @@ function playBeep(freq, duration, vol){
 // 方向ロックモード
 function toggleLock(){
   const btn = document.getElementById('lockBtn');
-  if(!dirLocked){
-    lockedBearing = getMagneticBearing();
-    dirLocked = true;
+  if(!lockMode){
+    lockedHeading = getCorrectedHeading(); // 現在の真北補正済みヘッディングを基準に固定
+    lockMode = true;
     btn.textContent = '🔒 解除';
     btn.style.background = '#f97316';
     btn.style.color = '#000';
   } else {
-    dirLocked = false;
-    lockedBearing = null;
+    lockMode = false;
+    lockedHeading = null;
     btn.textContent = '🔓 ロック';
     btn.style.background = '';
     btn.style.color = '';
