@@ -5,152 +5,181 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>アンテナ方向プロ</title>
 <style>
-body{
-  margin:0;
-  background:#0b0b0d;
-  color:#fff;
-  font-family:-apple-system,BlinkMacSystemFont;
-  text-align:center;
-}
-#angle{
-  font-size:60px;
-  margin-top:30px;
-}
-#dir{
-  font-size:24px;
-  opacity:0.7;
-}
-button{
-  margin:10px;
-  padding:12px 20px;
-  border:none;
-  border-radius:10px;
-  background:#1f1f25;
-  color:#fff;
-  font-size:16px;
-}
-.warn{color:#ff6b6b;}
-.good{color:#4caf50;}
+body{margin:0;background:#0b0b0d;color:#fff;text-align:center;font-family:-apple-system}
+#angle{font-size:60px;margin-top:30px}
+#dir{font-size:20px;opacity:.8}
+#gps{font-size:14px;opacity:.6}
+button{margin:15px;padding:12px 20px;border:none;border-radius:10px;background:#1f1f25;color:#fff}
+.warn{color:#ff6b6b}.good{color:#4caf50}
 </style>
 </head>
 <body>
 
 <h2>アンテナ方向プロ</h2>
 <div id="angle">--°</div>
-<div id="dir">測位中...</div>
+<div id="dir">初期待機</div>
 <div id="gps"></div>
-
 <button onclick="start()">開始</button>
 
 <script>
-let targetLat = 35.7101; // スカイツリー
-let targetLon = 139.8107;
+// ================= DB（サンプル） =================
+let towers = [
+ {name:"東京スカイツリー",lat:35.7101,lon:139.8107,type:"main",channels:[27],power:10},
+ {name:"杉並中継局",lat:35.699,lon:139.636,type:"relay",channels:[27],power:1}
+];
 
-let lastHeading = null;
+// ================= 基本関数 =================
+const toRad = d=>d*Math.PI/180;
+const toDeg = r=>r*180/Math.PI;
 
-function toRad(deg){ return deg * Math.PI/180; }
-function toDeg(rad){ return rad * 180/Math.PI; }
-
-// 方位角計算（真北基準）
-function calcAzimuth(lat1, lon1, lat2, lon2){
-  let dLon = toRad(lon2 - lon1);
-  lat1 = toRad(lat1);
-  lat2 = toRad(lat2);
-
-  let y = Math.sin(dLon) * Math.cos(lat2);
-  let x = Math.cos(lat1)*Math.sin(lat2) -
-          Math.sin(lat1)*Math.cos(lat2)*Math.cos(dLon);
-
-  let brng = toDeg(Math.atan2(y, x));
-  return (brng + 360) % 360;
+// 方位角
+function calcAzimuth(lat1,lon1,lat2,lon2){
+ let dLon=toRad(lon2-lon1);
+ lat1=toRad(lat1);lat2=toRad(lat2);
+ let y=Math.sin(dLon)*Math.cos(lat2);
+ let x=Math.cos(lat1)*Math.sin(lat2)-Math.sin(lat1)*Math.cos(lat2)*Math.cos(dLon);
+ return (toDeg(Math.atan2(y,x))+360)%360;
 }
 
-// 平均化
-let history = [];
-function smooth(val){
-  history.push(val);
-  if(history.length > 5) history.shift();
-  return history.reduce((a,b)=>a+b)/history.length;
+// 距離
+function calcDistance(lat1,lon1,lat2,lon2){
+ let R=6371;
+ let dLat=toRad(lat2-lat1);
+ let dLon=toRad(lon2-lon1);
+ let a=Math.sin(dLat/2)**2+
+ Math.cos(toRad(lat1))*Math.cos(toRad(lat2))*Math.sin(dLon/2)**2;
+ return R*(2*Math.atan2(Math.sqrt(a),Math.sqrt(1-a)));
 }
 
+// ================= 擬似電界 =================
+function calcSignalScore(dist,power,type){
+ let score = power/(dist*dist+0.1);
+ if(type==="relay") score*=1.5;
+ return score;
+}
+
+// ================= 遮蔽キャッシュ =================
+let obstacleCache={};
+
+// 軽量遮蔽チェック（簡易版）
+async function checkObstacle(user,tower){
+
+ let key = tower.name;
+ if(obstacleCache[key]!==undefined) return obstacleCache[key];
+
+ try{
+  let midLat=(user.lat+tower.lat)/2;
+  let midLon=(user.lon+tower.lon)/2;
+
+  let res=await fetch(`https://cyberjapandata2.gsi.go.jp/general/dem/scripts/getelevation.php?lon=${midLon}&lat=${midLat}&outtype=JSON`);
+  let data=await res.json();
+
+  let blocked = data.elevation > 200; // 簡易判定
+  obstacleCache[key]=blocked;
+  return blocked;
+
+ }catch(e){
+  return false;
+ }
+}
+
+// ================= 最適局 =================
+async function selectBestTower(user,channel){
+
+ let best=null,bestScore=-Infinity;
+
+ for(let t of towers){
+
+  if(!t.channels.includes(channel)) continue;
+
+  let dist=calcDistance(user.lat,user.lon,t.lat,t.lon);
+  let score=calcSignalScore(dist,t.power,t.type);
+
+  let blocked = await checkObstacle(user,t);
+  if(blocked) score*=0.3;
+
+  if(score>bestScore){
+   bestScore=score;
+   best=t;
+  }
+ }
+
+ return best;
+}
+
+// ================= センサー =================
+let targetAzimuth=null;
+let lastHeading=null;
+let smoothArr=[];
+
+function smooth(v){
+ smoothArr.push(v);
+ if(smoothArr.length>5) smoothArr.shift();
+ return smoothArr.reduce((a,b)=>a+b)/smoothArr.length;
+}
+
+// ================= メイン =================
 function start(){
 
-  // GPS取得
-  navigator.geolocation.watchPosition(pos=>{
-    let lat = pos.coords.latitude;
-    let lon = pos.coords.longitude;
-    let acc = pos.coords.accuracy;
+ navigator.geolocation.watchPosition(async pos=>{
 
-    document.getElementById("gps").innerHTML =
-      `GPS精度: ${acc.toFixed(1)}m`;
+  let lat=pos.coords.latitude;
+  let lon=pos.coords.longitude;
+  let acc=pos.coords.accuracy;
 
-    if(acc > 30){
-      document.getElementById("gps").className="warn";
-    }else{
-      document.getElementById("gps").className="good";
-    }
+  document.getElementById("gps").innerText=`GPS精度:${acc.toFixed(1)}m`;
 
-    window.targetAzimuth = calcAzimuth(lat, lon, targetLat, targetLon);
+  if(acc>50) return;
 
-  }, err=>{
-    alert("GPS取得失敗");
-  },{
-    enableHighAccuracy:true,
-    maximumAge:0,
-    timeout:10000
+  let user={lat,lon};
+  let tower=await selectBestTower(user,27);
+
+  if(!tower) return;
+
+  targetAzimuth=calcAzimuth(lat,lon,tower.lat,tower.lon);
+
+  document.getElementById("dir").innerText=`${tower.name}`;
+
+ },{
+  enableHighAccuracy:true,
+  maximumAge:0,
+  timeout:10000
+ });
+
+ // iPhone対応
+ if(typeof DeviceOrientationEvent.requestPermission==="function"){
+  DeviceOrientationEvent.requestPermission().then(res=>{
+   if(res==="granted"){
+    window.addEventListener("deviceorientation",handler);
+   }
   });
-
-  // コンパス（iPhone対応）
-  if (typeof DeviceOrientationEvent.requestPermission === 'function') {
-    DeviceOrientationEvent.requestPermission().then(res=>{
-      if(res==='granted'){
-        window.addEventListener('deviceorientation', handler);
-      }
-    });
-  } else {
-    window.addEventListener('deviceorientationabsolute', handler);
-  }
+ }else{
+  window.addEventListener("deviceorientationabsolute",handler);
+ }
 }
 
+// ================= コンパス処理 =================
 function handler(e){
 
-  let heading;
+ let heading;
 
-  if(e.webkitCompassHeading){
-    heading = e.webkitCompassHeading; // iPhone
-  }else{
-    heading = 360 - e.alpha; // Android
-  }
+ if(e.webkitCompassHeading){
+  heading=e.webkitCompassHeading;
+ }else if(e.alpha!=null){
+  heading=360-e.alpha;
+ }else return;
 
-  if(heading == null) return;
+ if(lastHeading!==null && Math.abs(heading-lastHeading)>40) return;
+ lastHeading=heading;
 
-  // ノイズカット
-  if(lastHeading !== null){
-    if(Math.abs(heading - lastHeading) > 30) return;
-  }
-  lastHeading = heading;
+ heading=smooth(heading);
 
-  heading = smooth(heading);
+ if(targetAzimuth===null) return;
 
-  let diff = window.targetAzimuth - heading;
-  if(diff < 0) diff += 360;
+ let diff=targetAzimuth-heading;
+ if(diff<0) diff+=360;
 
-  document.getElementById("angle").innerText =
-    diff.toFixed(1) + "°";
-
-  let txt = "";
-
-  if(diff < 5 || diff > 355){
-    txt = "◎ 完全一致";
-  }else if(diff < 15){
-    txt = "○ かなり良い";
-  }else if(diff < 30){
-    txt = "△ 調整必要";
-  }else{
-    txt = "× 大きくズレ";
-  }
-
-  document.getElementById("dir").innerText = txt;
+ document.getElementById("angle").innerText=diff.toFixed(1)+"°";
 }
 
 </script>
