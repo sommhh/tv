@@ -545,7 +545,7 @@ svg{display:inline-block}
             <canvas id="elevCanvasBs" width="160" height="128"></canvas>
           </div>
         </div>
-        <p class="sat-desc">最も一般的な衛星放送。方位は南西、午後2時の太陽を目安に。</p>
+        <p class="sat-desc">最も一般的な衛星放送（110°E静止軌道）。現在地から計算した方位・仰角です。方位は南西方向、午後2時の太陽を目安に。スキューがマイナスのときLNBを反時計回りに回転。</p>
       </div>
       <div class="sat-card" id="satCardPremium">
         <div class="sat-card-head">
@@ -573,7 +573,7 @@ svg{display:inline-block}
             <canvas id="elevCanvasPremium" width="160" height="128"></canvas>
           </div>
         </div>
-        <p class="sat-desc">124/128度衛星。BSよりも西に振り、仰角は数度低くなります。</p>
+        <p class="sat-desc">スカパープレミアム（124°E静止軌道）。現在地から計算。BSより西寄り・仰角は数度低くなります。スキュー角でLNBの傾きを設定してください。</p>
       </div>
       <div class="bs-note">
         <strong>重要:</strong> 衛星アンテナは1ミリのズレで受信できなくなります。まずは仰角（上下）をボルトの目盛りで正確に固定し、そのあとゆっくりと左右を探してください。
@@ -886,58 +886,35 @@ function calculateDistance(lat1, lon1, lat2, lon2){
   return R*2*Math.atan2(Math.sqrt(a),Math.sqrt(1-a));
 }
 
-function calculateSatellite(lat, lon, satLon){
-  const φ = toRad(lat);
-  const dλ = toRad(satLon - lon);
+// 衛星計算（現在地基準・統一式）
+// 方位角：atan2(sin(dLon), -sinφ·cos(dLon)) → 真北基準
+// 仰角：atan((cosφ·cos(dLon) - 0.1512) / sqrt(1-(cosφ·cos(dLon))²))
+// スキュー：atan(sin(dLon) / tanφ)
+function calcSatellite(lat, lon, satLon){
+  const φ   = toRad(lat);
+  const dLon = toRad(satLon - lon);
 
-  const azimuth = (toDeg(Math.atan2(
-    Math.sin(dλ),
-    Math.cos(φ)*Math.tan(toRad(0)) - Math.sin(φ)*Math.cos(dλ)
-  )) + 180) % 360;
+  // ① 方位角（真北基準）
+  const az    = Math.atan2(Math.sin(dLon), -Math.sin(φ) * Math.cos(dLon));
+  const azDeg = (toDeg(az) + 360) % 360;
 
-  const Re = 6371;
-  const h = 35786;
-  const r = Re + h;
+  // ② 仰角
+  const cosX = Math.cos(φ) * Math.cos(dLon);
+  const el   = Math.atan((cosX - 0.1512) / Math.sqrt(1 - cosX * cosX));
+  const elDeg = toDeg(el);
 
-  const γ = Math.acos(Math.cos(φ) * Math.cos(dλ));
-  const elevation = toDeg(Math.atan2(
-    Math.cos(γ) - (Re / r),
-    Math.sin(γ)
-  ));
+  // ③ スキュー（偏波角）　マイナス＝反時計回り
+  const skewDeg = toDeg(Math.atan(Math.sin(dLon) / Math.tan(φ)));
 
-  return { azimuth, elevation };
+  return { azimuth: azDeg, elevation: elDeg, skew: skewDeg };
 }
 
-// プロ用高精度衛星計算（真北基準）
-function calculateSatelliteStrict(lat, lon, satLon){
-  const Re = 6378.137; // 地球半径(km) WGS84
-  const Rs = 42164;    // 衛星軌道半径(km) 地球中心から
-
-  const φ = toRad(lat);
-  const dλ = toRad(satLon - lon);
-
-  const cosγ = Math.cos(φ) * Math.cos(dλ);
-  const γ = Math.acos(cosγ);
-
-  const elevation = toDeg(Math.atan2(
-    cosγ - (Re / Rs),
-    Math.sin(γ)
-  ));
-
-  // 方位角（真北基準）
-  const azimuth = (toDeg(Math.atan2(
-    Math.sin(dλ),
-    -Math.sin(φ) * Math.cos(dλ)
-  )) + 180) % 360;
-
-  return { azimuth, elevation };
-}
-
-// LNBスキュー（偏波角）
+// 後方互換エイリアス（他所から呼ばれている場合に備える）
+function calculateSatelliteStrict(lat, lon, satLon){ return calcSatellite(lat, lon, satLon); }
 function calculateSkew(lat, lon, satLon){
   const φ = toRad(lat);
-  const dλ = toRad(satLon - lon);
-  return toDeg(Math.atan(Math.sin(dλ) / Math.tan(φ)));
+  const dLon = toRad(satLon - lon);
+  return toDeg(Math.atan(Math.sin(dLon) / Math.tan(φ)));
 }
 
 function getDirectionNameJa(bearing){
@@ -1078,18 +1055,14 @@ function calibrateCompass(){
 function getDecl(){ return calculateDeclination(userLoc.lat, userLoc.lon); }
 
 function getSatInfo(){
-  // calculateSatelliteStrict は真北基準で返す → decl補正不要
-  const bs = calculateSatelliteStrict(userLoc.lat, userLoc.lon, SATELLITES.bs.lon);
-  const premium = calculateSatelliteStrict(userLoc.lat, userLoc.lon, SATELLITES.premium.lon);
-  return {
-    bs: { az: bs.azimuth, el: bs.elevation, skew: calculateSkew(userLoc.lat, userLoc.lon, SATELLITES.bs.lon) },
-    premium: { az: premium.azimuth, el: premium.elevation, skew: calculateSkew(userLoc.lat, userLoc.lon, SATELLITES.premium.lon) }
-  };
+  const bs      = calcSatellite(userLoc.lat, userLoc.lon, SATELLITES.bs.lon);
+  const premium = calcSatellite(userLoc.lat, userLoc.lon, SATELLITES.premium.lon);
+  return { bs, premium }; // 各々 { azimuth, elevation, skew }
 }
 
 function getMagneticBearing(){
-  if(selectedKey === 'bs110') return getSatInfo().bs.az;
-  if(selectedKey === 'premium') return getSatInfo().premium.az;
+  if(selectedKey === 'bs110') return getSatInfo().bs.azimuth;
+  if(selectedKey === 'premium') return getSatInfo().premium.azimuth;
   const st = STATIONS[selectedKey];
   if(!st) return 0;
   return calculateBearing(userLoc.lat, userLoc.lon, st.lat, st.lon);
@@ -1268,14 +1241,14 @@ function updateDetailTab(){
 
 function updateBsTab(){
   const sat = getSatInfo();
-  document.getElementById('bsAz').textContent = sat.bs.az.toFixed(1) + '°';
-  document.getElementById('bsEl').textContent = sat.bs.el.toFixed(1) + '°';
-  document.getElementById('bsSkew').textContent = sat.bs.skew.toFixed(1) + '°';
-  document.getElementById('premiumAz').textContent = sat.premium.az.toFixed(1) + '°';
-  document.getElementById('premiumEl').textContent = sat.premium.el.toFixed(1) + '°';
-  document.getElementById('premiumSkew').textContent = sat.premium.skew.toFixed(1) + '°';
-  drawElevCanvas(document.getElementById('elevCanvasBs'), sat.bs.el, '#f97316');
-  drawElevCanvas(document.getElementById('elevCanvasPremium'), sat.premium.el, '#0ea5e9');
+  document.getElementById('bsAz').textContent    = sat.bs.azimuth.toFixed(1)   + '°';
+  document.getElementById('bsEl').textContent    = sat.bs.elevation.toFixed(1) + '°';
+  document.getElementById('bsSkew').textContent  = sat.bs.skew.toFixed(1)      + '°';
+  document.getElementById('premiumAz').textContent   = sat.premium.azimuth.toFixed(1)   + '°';
+  document.getElementById('premiumEl').textContent   = sat.premium.elevation.toFixed(1) + '°';
+  document.getElementById('premiumSkew').textContent = sat.premium.skew.toFixed(1)      + '°';
+  drawElevCanvas(document.getElementById('elevCanvasBs'),      sat.bs.elevation,      '#f97316');
+  drawElevCanvas(document.getElementById('elevCanvasPremium'), sat.premium.elevation, '#0ea5e9');
 }
 
 function drawElevCanvas(canvas, elDeg, color){
