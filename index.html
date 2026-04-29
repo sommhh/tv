@@ -600,57 +600,34 @@ svg{display:inline-block}
 // CONSTANTS
 // ============================================================
 const STATIONS = {
-  dainenji: {
-    id:'dainenji', name:'大年寺山', area:'仙台市太白区', prefecture:'miyagi',
-    lat:38.2282, lon:140.8650, polarization:'水平',
+  // ===== 宮城 =====
+  dainenji_mmt: {
+    id:'dainenji_mmt', name:'大年寺山（MMT塔）', area:'仙台市太白区', prefecture:'miyagi',
+    lat:38.240222, lon:140.878056, polarization:'水平',
+    channels:[
+      {id:4, name:'ミヤギテレビ(MMT)', ch:'17ch', power:'3kW'},
+    ]
+  },
+  dainenji_nhk: {
+    id:'dainenji_nhk', name:'大年寺山（NHK/TBC/KHB）', area:'仙台市太白区', prefecture:'miyagi',
+    lat:38.238472, lon:140.874306, polarization:'水平',
     channels:[
       {id:1, name:'東北放送(TBC)',    ch:'22ch', power:'3kW'},
       {id:2, name:'NHK教育',         ch:'13ch', power:'3kW'},
       {id:3, name:'NHK仙台総合',     ch:'27ch', power:'3kW'},
-      {id:4, name:'ミヤギテレビ(MMT)',ch:'17ch', power:'3kW'},
       {id:5, name:'東日本放送(KHB)', ch:'15ch', power:'3kW'},
-      {id:6, name:'仙台放送(OX)',    ch:'20ch', power:'3kW'},
     ]
   },
-  sasamori: {
-    id:'sasamori', name:'笹森山', area:'仙台市青葉区', prefecture:'miyagi',
-    lat:38.2850, lon:140.7830, polarization:'水平',
+  dainenji_ox: {
+    id:'dainenji_ox', name:'大年寺山（OX/Date fm）', area:'仙台市太白区', prefecture:'miyagi',
+    lat:38.237500, lon:140.872944, polarization:'水平',
     channels:[
-      {id:1, name:'東北放送(TBC)',    ch:'17ch', power:'100W'},
-      {id:2, name:'NHK教育',         ch:'13ch', power:'100W'},
-      {id:3, name:'NHK仙台総合',     ch:'15ch', power:'100W'},
-      {id:4, name:'ミヤギテレビ(MMT)',ch:'27ch', power:'30W'},
-      {id:5, name:'東日本放送(KHB)', ch:'22ch', power:'30W'},
-      {id:6, name:'仙台放送(OX)',    ch:'20ch', power:'30W'},
-    ]
-  },
-  shibata: {
-    id:'shibata', name:'柴田', area:'柴田郡柴田町', prefecture:'miyagi',
-    lat:38.0498, lon:140.7650, polarization:'水平',
-    channels:[
-      {id:1, name:'東北放送(TBC)',    ch:'20ch', power:'100W'},
-      {id:2, name:'NHK教育',         ch:'15ch', power:'100W'},
-      {id:3, name:'NHK仙台総合',     ch:'13ch', power:'100W'},
-      {id:4, name:'ミヤギテレビ(MMT)',ch:'22ch', power:'30W'},
-      {id:5, name:'東日本放送(KHB)', ch:'17ch', power:'30W'},
-      {id:6, name:'仙台放送(OX)',    ch:'27ch', power:'30W'},
-    ]
-  },
-  furukawa: {
-    id:'furukawa', name:'古川', area:'大崎市古川', prefecture:'miyagi',
-    lat:38.5763, lon:140.9553, polarization:'水平',
-    channels:[
-      {id:1, name:'東北放送(TBC)',    ch:'22ch', power:'1kW'},
-      {id:2, name:'NHK教育',         ch:'15ch', power:'1kW'},
-      {id:3, name:'NHK仙台総合',     ch:'13ch', power:'1kW'},
-      {id:4, name:'ミヤギテレビ(MMT)',ch:'17ch', power:'300W'},
-      {id:5, name:'東日本放送(KHB)', ch:'20ch', power:'300W'},
-      {id:6, name:'仙台放送(OX)',    ch:'27ch', power:'300W'},
+      {id:6, name:'仙台放送(OX)', ch:'20ch', power:'3kW'},
     ]
   },
   kesennuma: {
-    id:'kesennuma', name:'気仙沼', area:'気仙沼市', prefecture:'miyagi',
-    lat:38.9065, lon:141.5693, polarization:'水平',
+    id:'kesennuma', name:'気仙沼（長の森山）', area:'気仙沼市', prefecture:'miyagi',
+    lat:38.829444, lon:141.520278, polarization:'水平',
     channels:[
       {id:1, name:'東北放送(TBC)',    ch:'22ch', power:'300W'},
       {id:2, name:'NHK教育',         ch:'15ch', power:'300W'},
@@ -661,8 +638,8 @@ const STATIONS = {
     ]
   },
   ishinomaki: {
-    id:'ishinomaki', name:'石巻', area:'石巻市', prefecture:'miyagi',
-    lat:38.4338, lon:141.3023, polarization:'水平',
+    id:'ishinomaki', name:'石巻（古館山）', area:'石巻市', prefecture:'miyagi',
+    lat:38.426111, lon:141.303889, polarization:'水平',
     channels:[
       {id:1, name:'東北放送(TBC)',    ch:'22ch', power:'1kW'},
       {id:2, name:'NHK教育',         ch:'15ch', power:'1kW'},
@@ -672,21 +649,130 @@ const STATIONS = {
       {id:6, name:'仙台放送(OX)',    ch:'27ch', power:'300W'},
     ]
   },
-  fukushima: {
-    id:'fukushima', name:'福島', area:'福島市', prefecture:'fukushima',
-    lat:37.7607, lon:140.4750, polarization:'水平',
+  akiu: {
+    id:'akiu', name:'秋保（大倉山）', area:'仙台市太白区秋保町', prefecture:'miyagi',
+    lat:38.224722, lon:140.720556, polarization:'水平',
     channels:[
-      {id:1, name:'NHK福島総合',          ch:'13ch', power:'3kW'},
-      {id:2, name:'NHK教育',              ch:'15ch', power:'3kW'},
-      {id:3, name:'福島中央テレビ(FCT)',  ch:'19ch', power:'3kW'},
-      {id:4, name:'福島放送(KFB)',        ch:'22ch', power:'3kW'},
-      {id:5, name:'テレビユー福島(TUF)',  ch:'28ch', power:'3kW'},
-      {id:6, name:'福島テレビ(FTV)',      ch:'25ch', power:'3kW'},
+      {id:1, name:'東北放送(TBC)',    ch:'22ch', power:'3W'},
+      {id:2, name:'NHK教育',         ch:'15ch', power:'3W'},
+      {id:3, name:'NHK仙台総合',     ch:'13ch', power:'3W'},
+      {id:4, name:'ミヤギテレビ(MMT)',ch:'17ch', power:'3W'},
+      {id:5, name:'東日本放送(KHB)', ch:'20ch', power:'3W'},
+      {id:6, name:'仙台放送(OX)',    ch:'27ch', power:'3W'},
+    ]
+  },
+  shibata: {
+    id:'shibata', name:'柴田船迫', area:'柴田郡柴田町', prefecture:'miyagi',
+    lat:38.055556, lon:140.765833, polarization:'水平',
+    channels:[
+      {id:1, name:'東北放送(TBC)',    ch:'20ch', power:'100W'},
+      {id:2, name:'NHK教育',         ch:'15ch', power:'100W'},
+      {id:3, name:'NHK仙台総合',     ch:'13ch', power:'100W'},
+      {id:4, name:'ミヤギテレビ(MMT)',ch:'22ch', power:'30W'},
+      {id:5, name:'東日本放送(KHB)', ch:'17ch', power:'30W'},
+      {id:6, name:'仙台放送(OX)',    ch:'27ch', power:'30W'},
+    ]
+  },
+  furukawa: {
+    id:'furukawa', name:'古川（大崎市）', area:'大崎市古川', prefecture:'miyagi',
+    lat:38.571389, lon:140.955556, polarization:'水平',
+    channels:[
+      {id:1, name:'東北放送(TBC)',    ch:'22ch', power:'1kW'},
+      {id:2, name:'NHK教育',         ch:'15ch', power:'1kW'},
+      {id:3, name:'NHK仙台総合',     ch:'13ch', power:'1kW'},
+      {id:4, name:'ミヤギテレビ(MMT)',ch:'17ch', power:'300W'},
+      {id:5, name:'東日本放送(KHB)', ch:'20ch', power:'300W'},
+      {id:6, name:'仙台放送(OX)',    ch:'27ch', power:'300W'},
+    ]
+  },
+  murata: {
+    id:'murata', name:'村田（相山公園）', area:'柴田郡村田町', prefecture:'miyagi',
+    lat:38.118056, lon:140.717500, polarization:'水平',
+    channels:[
+      {id:1, name:'東北放送(TBC)',    ch:'22ch', power:'10W'},
+      {id:2, name:'NHK教育',         ch:'15ch', power:'10W'},
+      {id:3, name:'NHK仙台総合',     ch:'13ch', power:'10W'},
+      {id:4, name:'ミヤギテレビ(MMT)',ch:'17ch', power:'10W'},
+      {id:5, name:'東日本放送(KHB)', ch:'20ch', power:'10W'},
+      {id:6, name:'仙台放送(OX)',    ch:'27ch', power:'10W'},
+    ]
+  },
+  shiroishi: {
+    id:'shiroishi', name:'白石（城跡裏山）', area:'白石市', prefecture:'miyagi',
+    lat:38.002500, lon:140.621389, polarization:'水平',
+    channels:[
+      {id:1, name:'東北放送(TBC)',    ch:'22ch', power:'100W'},
+      {id:2, name:'NHK教育',         ch:'15ch', power:'100W'},
+      {id:3, name:'NHK仙台総合',     ch:'13ch', power:'100W'},
+      {id:4, name:'ミヤギテレビ(MMT)',ch:'17ch', power:'30W'},
+      {id:5, name:'東日本放送(KHB)', ch:'20ch', power:'30W'},
+      {id:6, name:'仙台放送(OX)',    ch:'27ch', power:'30W'},
+    ]
+  },
+  naruko: {
+    id:'naruko', name:'鳴子（鳥谷坂）', area:'大崎市鳴子温泉', prefecture:'miyagi',
+    lat:38.739444, lon:140.713889, polarization:'水平',
+    channels:[
+      {id:1, name:'東北放送(TBC)',    ch:'22ch', power:'3W'},
+      {id:2, name:'NHK教育',         ch:'15ch', power:'3W'},
+      {id:3, name:'NHK仙台総合',     ch:'13ch', power:'3W'},
+      {id:4, name:'ミヤギテレビ(MMT)',ch:'17ch', power:'3W'},
+      {id:5, name:'東日本放送(KHB)', ch:'20ch', power:'3W'},
+      {id:6, name:'仙台放送(OX)',    ch:'27ch', power:'3W'},
+    ]
+  },
+  kakuda: {
+    id:'kakuda', name:'角田（高倉山）', area:'角田市', prefecture:'miyagi',
+    lat:37.976389, lon:140.771944, polarization:'水平',
+    channels:[
+      {id:1, name:'東北放送(TBC)',    ch:'22ch', power:'30W'},
+      {id:2, name:'NHK教育',         ch:'15ch', power:'30W'},
+      {id:3, name:'NHK仙台総合',     ch:'13ch', power:'30W'},
+      {id:4, name:'ミヤギテレビ(MMT)',ch:'17ch', power:'10W'},
+      {id:5, name:'東日本放送(KHB)', ch:'20ch', power:'10W'},
+      {id:6, name:'仙台放送(OX)',    ch:'27ch', power:'10W'},
+    ]
+  },
+  marumori: {
+    id:'marumori', name:'丸森筆甫（五反田）', area:'伊具郡丸森町', prefecture:'miyagi',
+    lat:37.911111, lon:140.763889, polarization:'水平',
+    channels:[
+      {id:1, name:'東北放送(TBC)',    ch:'22ch', power:'0.1W'},
+      {id:2, name:'NHK教育',         ch:'15ch', power:'0.1W'},
+      {id:3, name:'NHK仙台総合',     ch:'13ch', power:'0.1W'},
+      {id:4, name:'ミヤギテレビ(MMT)',ch:'17ch', power:'0.1W'},
+      {id:5, name:'東日本放送(KHB)', ch:'20ch', power:'0.1W'},
+      {id:6, name:'仙台放送(OX)',    ch:'27ch', power:'0.1W'},
+    ]
+  },
+  zao: {
+    id:'zao', name:'蔵王（遠刈田）', area:'刈田郡蔵王町', prefecture:'miyagi',
+    lat:38.093056, lon:140.650000, polarization:'水平',
+    channels:[
+      {id:1, name:'東北放送(TBC)',    ch:'22ch', power:'10W'},
+      {id:2, name:'NHK教育',         ch:'15ch', power:'10W'},
+      {id:3, name:'NHK仙台総合',     ch:'13ch', power:'10W'},
+      {id:4, name:'ミヤギテレビ(MMT)',ch:'17ch', power:'10W'},
+      {id:5, name:'東日本放送(KHB)', ch:'20ch', power:'10W'},
+      {id:6, name:'仙台放送(OX)',    ch:'27ch', power:'10W'},
+    ]
+  },
+  // ===== 福島 =====
+  fukushima: {
+    id:'fukushima', name:'笹森山', area:'福島市', prefecture:'fukushima',
+    lat:37.657917, lon:140.387694, polarization:'水平',
+    channels:[
+      {id:1, name:'NHK福島総合',         ch:'13ch', power:'3kW'},
+      {id:2, name:'NHK教育',             ch:'15ch', power:'3kW'},
+      {id:3, name:'福島中央テレビ(FCT)', ch:'19ch', power:'3kW'},
+      {id:4, name:'福島放送(KFB)',       ch:'22ch', power:'3kW'},
+      {id:5, name:'テレビユー福島(TUF)', ch:'28ch', power:'3kW'},
+      {id:6, name:'福島テレビ(FTV)',     ch:'25ch', power:'3kW'},
     ]
   },
   aizuwakamatsu: {
-    id:'aizuwakamatsu', name:'会津若松', area:'会津若松市', prefecture:'fukushima',
-    lat:37.4950, lon:139.9290, polarization:'水平',
+    id:'aizuwakamatsu', name:'背炙山（会津若松）', area:'会津若松市', prefecture:'fukushima',
+    lat:37.472778, lon:139.990833, polarization:'水平',
     channels:[
       {id:1, name:'NHK福島総合',         ch:'13ch', power:'1kW'},
       {id:2, name:'NHK教育',             ch:'15ch', power:'1kW'},
@@ -696,22 +782,22 @@ const STATIONS = {
       {id:6, name:'福島テレビ(FTV)',     ch:'25ch', power:'300W'},
     ]
   },
+  // ===== 山形 =====
   yamagata: {
-    id:'yamagata', name:'山形', area:'山形市', prefecture:'yamagata',
-    lat:38.2555, lon:140.3398, polarization:'水平',
+    id:'yamagata', name:'西蔵王', area:'山形市', prefecture:'yamagata',
+    lat:38.202482, lon:140.356884, polarization:'水平',
     channels:[
-      {id:1, name:'NHK山形総合',           ch:'13ch', power:'3kW'},
-      {id:2, name:'NHK教育',               ch:'15ch', power:'3kW'},
-      {id:3, name:'山形放送(YBC)',          ch:'17ch', power:'3kW'},
-      {id:4, name:'山形テレビ(YTS)',        ch:'21ch', power:'3kW'},
-      {id:5, name:'テレビユー山形(TUY)',    ch:'23ch', power:'3kW'},
-      {id:6, name:'テレビユー山形(TUY)',    ch:'23ch', power:'3kW'},
-      {id:8, name:'さくらんぼTV(SAY)',      ch:'27ch', power:'3kW'},
+      {id:1, name:'NHK山形総合',        ch:'13ch', power:'3kW'},
+      {id:2, name:'NHK教育',            ch:'15ch', power:'3kW'},
+      {id:3, name:'山形放送(YBC)',       ch:'17ch', power:'3kW'},
+      {id:4, name:'山形テレビ(YTS)',     ch:'21ch', power:'3kW'},
+      {id:5, name:'テレビユー山形(TUY)', ch:'23ch', power:'3kW'},
+      {id:8, name:'さくらんぼTV(SAY)',   ch:'27ch', power:'3kW'},
     ]
   },
   shinjyo: {
-    id:'shinjyo', name:'新庄', area:'新庄市', prefecture:'yamagata',
-    lat:38.7630, lon:140.3033, polarization:'水平',
+    id:'shinjyo', name:'杢蔵山（新庄）', area:'新庄市', prefecture:'yamagata',
+    lat:38.789444, lon:140.401389, polarization:'水平',
     channels:[
       {id:1, name:'NHK山形総合',        ch:'13ch', power:'300W'},
       {id:2, name:'NHK教育',            ch:'15ch', power:'300W'},
@@ -960,7 +1046,7 @@ let locStatus = 'default';
 let rawHeading = null;
 let deviceHeading = null;
 let headingOffset = 0;
-let selectedKey = 'dainenji';
+let selectedKey = 'dainenji_nhk';
 let autoSelect = false;
 let prefFilter = 'miyagi';
 let isObstacleBlocked = false;
@@ -1381,7 +1467,7 @@ function toggleAuto(){
 
 function runAutoSelect(){
   if(!autoSelect) return;
-  let bestKey = 'dainenji', maxScore = -Infinity;
+  let bestKey = 'dainenji_nhk', maxScore = -Infinity;
   for(const [key, st] of Object.entries(STATIONS)){
     const dist = calculateDistance(userLoc.lat, userLoc.lon, st.lat, st.lon);
     const pwrStr = st.channels[0]?.power || '3000';
@@ -1389,8 +1475,8 @@ function runAutoSelect(){
     if(pwrStr.includes('kW')) pwr = parseFloat(pwrStr)*1000;
     else if(pwrStr.includes('W')) pwr = parseFloat(pwrStr);
     else if(pwrStr.includes('mW')) pwr = parseFloat(pwrStr)/1000;
-    const penalty = (key !== 'dainenji' && key !== 'sasamori' && key !== 'yamagata');
-    const score = calculateSignalScore(dist, pwr, penalty);
+    const isMain = key.startsWith('dainenji') || key === 'yamagata' || key === 'fukushima';
+    const score = calculateSignalScore(dist, pwr, !isMain);
     if(score > maxScore){ maxScore = score; bestKey = key; }
   }
   selectedKey = bestKey;
