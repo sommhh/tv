@@ -372,25 +372,9 @@ svg{display:inline-block}
         <div class="hud-val sm" id="hudAccuracy">Wait GPS...</div>
       </div>
     </div>
-    <div class="hud-divider"></div>
-    <div class="hud-item">
-      <div class="hud-icon">
-        <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3"/></svg>
-      </div>
-      <div>
-        <div class="hud-label">Signal Level</div>
-        <div style="display:flex;align-items:center;gap:6px">
-          <input id="signalInput" type="number" min="0" max="100" placeholder="--"
-            style="width:52px;background:var(--surface2);border:1px solid var(--border);border-radius:6px;color:var(--text);font-size:13px;font-family:monospace;font-weight:700;padding:2px 6px;text-align:center"
-            oninput="updateSignalHint()">
-          <span id="signalHint" style="font-size:11px;font-weight:700;color:var(--text3)">--</span>
-        </div>
-      </div>
-    </div>
     <div style="margin-left:auto;display:flex;gap:8px;align-items:center">
       <button class="compass-btn" id="compassBtn" style="display:none" onclick="requestCompassPermission()">コンパスを有効化</button>
       <button class="compass-btn" id="calibBtn" onclick="calibrateCompass()" title="現在の向きをゼロ基準にリセット">⊕ 校正</button>
-      <button class="compass-btn" id="lockBtn" onclick="toggleLock()" title="方向ロック（屋根上作業用）">🔓 ロック</button>
       <button class="compass-btn sound-off" id="soundBtn" onclick="toggleSound()">🔇 音 OFF</button>
     </div>
   </div>
@@ -620,120 +604,121 @@ const STATIONS = {
     id:'dainenji', name:'大年寺山', area:'仙台市太白区', prefecture:'miyagi',
     lat:38.2282, lon:140.8650, polarization:'水平',
     channels:[
-      {id:1, name:'NHK総合・仙台',  ch:'27ch', power:'3kW'},
-      {id:2, name:'NHK教育・仙台',  ch:'13ch', power:'3kW'},
-      {id:3, name:'TBC東北放送',    ch:'22ch', power:'3kW'},
-      {id:4, name:'MMT宮城テレビ',  ch:'17ch', power:'3kW'},
-      {id:5, name:'KHB東日本放送',  ch:'15ch', power:'3kW'},
-      {id:6, name:'OX仙台放送',     ch:'20ch', power:'3kW'},
+      {id:1, name:'東北放送(TBC)',    ch:'22ch', power:'3kW'},
+      {id:2, name:'NHK教育',         ch:'13ch', power:'3kW'},
+      {id:3, name:'NHK仙台総合',     ch:'27ch', power:'3kW'},
+      {id:4, name:'ミヤギテレビ(MMT)',ch:'17ch', power:'3kW'},
+      {id:5, name:'東日本放送(KHB)', ch:'15ch', power:'3kW'},
+      {id:6, name:'仙台放送(OX)',    ch:'20ch', power:'3kW'},
     ]
   },
   sasamori: {
     id:'sasamori', name:'笹森山', area:'仙台市青葉区', prefecture:'miyagi',
     lat:38.2850, lon:140.7830, polarization:'水平',
     channels:[
-      {id:1, name:'NHK総合',  ch:'15ch', power:'100W'},
-      {id:2, name:'NHK教育',  ch:'13ch', power:'100W'},
-      {id:3, name:'TBC',      ch:'17ch', power:'30W'},
-      {id:4, name:'MMT',      ch:'27ch', power:'30W'},
-      {id:5, name:'KHB',      ch:'22ch', power:'30W'},
-      {id:6, name:'OX',       ch:'20ch', power:'30W'},
+      {id:1, name:'東北放送(TBC)',    ch:'17ch', power:'100W'},
+      {id:2, name:'NHK教育',         ch:'13ch', power:'100W'},
+      {id:3, name:'NHK仙台総合',     ch:'15ch', power:'100W'},
+      {id:4, name:'ミヤギテレビ(MMT)',ch:'27ch', power:'30W'},
+      {id:5, name:'東日本放送(KHB)', ch:'22ch', power:'30W'},
+      {id:6, name:'仙台放送(OX)',    ch:'20ch', power:'30W'},
     ]
   },
   shibata: {
     id:'shibata', name:'柴田', area:'柴田郡柴田町', prefecture:'miyagi',
     lat:38.0498, lon:140.7650, polarization:'水平',
     channels:[
-      {id:1, name:'NHK総合',  ch:'13ch', power:'100W'},
-      {id:2, name:'NHK教育',  ch:'15ch', power:'100W'},
-      {id:3, name:'TBC',      ch:'20ch', power:'30W'},
-      {id:4, name:'MMT',      ch:'22ch', power:'30W'},
-      {id:5, name:'KHB',      ch:'17ch', power:'30W'},
-      {id:6, name:'OX',       ch:'27ch', power:'30W'},
+      {id:1, name:'東北放送(TBC)',    ch:'20ch', power:'100W'},
+      {id:2, name:'NHK教育',         ch:'15ch', power:'100W'},
+      {id:3, name:'NHK仙台総合',     ch:'13ch', power:'100W'},
+      {id:4, name:'ミヤギテレビ(MMT)',ch:'22ch', power:'30W'},
+      {id:5, name:'東日本放送(KHB)', ch:'17ch', power:'30W'},
+      {id:6, name:'仙台放送(OX)',    ch:'27ch', power:'30W'},
     ]
   },
   furukawa: {
     id:'furukawa', name:'古川', area:'大崎市古川', prefecture:'miyagi',
     lat:38.5763, lon:140.9553, polarization:'水平',
     channels:[
-      {id:1, name:'NHK総合',  ch:'13ch', power:'1kW'},
-      {id:2, name:'NHK教育',  ch:'15ch', power:'1kW'},
-      {id:3, name:'TBC',      ch:'22ch', power:'300W'},
-      {id:4, name:'MMT',      ch:'17ch', power:'300W'},
-      {id:5, name:'KHB',      ch:'20ch', power:'300W'},
-      {id:6, name:'OX',       ch:'27ch', power:'300W'},
+      {id:1, name:'東北放送(TBC)',    ch:'22ch', power:'1kW'},
+      {id:2, name:'NHK教育',         ch:'15ch', power:'1kW'},
+      {id:3, name:'NHK仙台総合',     ch:'13ch', power:'1kW'},
+      {id:4, name:'ミヤギテレビ(MMT)',ch:'17ch', power:'300W'},
+      {id:5, name:'東日本放送(KHB)', ch:'20ch', power:'300W'},
+      {id:6, name:'仙台放送(OX)',    ch:'27ch', power:'300W'},
     ]
   },
   kesennuma: {
     id:'kesennuma', name:'気仙沼', area:'気仙沼市', prefecture:'miyagi',
     lat:38.9065, lon:141.5693, polarization:'水平',
     channels:[
-      {id:1, name:'NHK総合',  ch:'13ch', power:'300W'},
-      {id:2, name:'NHK教育',  ch:'15ch', power:'300W'},
-      {id:3, name:'TBC',      ch:'22ch', power:'100W'},
-      {id:4, name:'MMT',      ch:'17ch', power:'100W'},
-      {id:5, name:'KHB',      ch:'20ch', power:'100W'},
-      {id:6, name:'OX',       ch:'27ch', power:'100W'},
+      {id:1, name:'東北放送(TBC)',    ch:'22ch', power:'300W'},
+      {id:2, name:'NHK教育',         ch:'15ch', power:'300W'},
+      {id:3, name:'NHK仙台総合',     ch:'13ch', power:'300W'},
+      {id:4, name:'ミヤギテレビ(MMT)',ch:'17ch', power:'100W'},
+      {id:5, name:'東日本放送(KHB)', ch:'20ch', power:'100W'},
+      {id:6, name:'仙台放送(OX)',    ch:'27ch', power:'100W'},
     ]
   },
   ishinomaki: {
     id:'ishinomaki', name:'石巻', area:'石巻市', prefecture:'miyagi',
     lat:38.4338, lon:141.3023, polarization:'水平',
     channels:[
-      {id:1, name:'NHK総合',  ch:'13ch', power:'1kW'},
-      {id:2, name:'NHK教育',  ch:'15ch', power:'1kW'},
-      {id:3, name:'TBC',      ch:'22ch', power:'300W'},
-      {id:4, name:'MMT',      ch:'17ch', power:'300W'},
-      {id:5, name:'KHB',      ch:'20ch', power:'300W'},
-      {id:6, name:'OX',       ch:'27ch', power:'300W'},
+      {id:1, name:'東北放送(TBC)',    ch:'22ch', power:'1kW'},
+      {id:2, name:'NHK教育',         ch:'15ch', power:'1kW'},
+      {id:3, name:'NHK仙台総合',     ch:'13ch', power:'1kW'},
+      {id:4, name:'ミヤギテレビ(MMT)',ch:'17ch', power:'300W'},
+      {id:5, name:'東日本放送(KHB)', ch:'20ch', power:'300W'},
+      {id:6, name:'仙台放送(OX)',    ch:'27ch', power:'300W'},
     ]
   },
   fukushima: {
     id:'fukushima', name:'福島', area:'福島市', prefecture:'fukushima',
     lat:37.7607, lon:140.4750, polarization:'水平',
     channels:[
-      {id:1, name:'NHK総合・福島',    ch:'13ch', power:'3kW'},
-      {id:2, name:'NHK教育',         ch:'15ch', power:'3kW'},
-      {id:3, name:'FCT福島中央TV',   ch:'19ch', power:'3kW'},
-      {id:4, name:'FTV福島テレビ',    ch:'25ch', power:'3kW'},
-      {id:5, name:'KFB福島放送',     ch:'22ch', power:'3kW'},
-      {id:6, name:'TUF テレビユー福島',ch:'28ch', power:'3kW'},
+      {id:1, name:'NHK福島総合',          ch:'13ch', power:'3kW'},
+      {id:2, name:'NHK教育',              ch:'15ch', power:'3kW'},
+      {id:3, name:'福島中央テレビ(FCT)',  ch:'19ch', power:'3kW'},
+      {id:4, name:'福島放送(KFB)',        ch:'22ch', power:'3kW'},
+      {id:5, name:'テレビユー福島(TUF)',  ch:'28ch', power:'3kW'},
+      {id:6, name:'福島テレビ(FTV)',      ch:'25ch', power:'3kW'},
     ]
   },
   aizuwakamatsu: {
     id:'aizuwakamatsu', name:'会津若松', area:'会津若松市', prefecture:'fukushima',
     lat:37.4950, lon:139.9290, polarization:'水平',
     channels:[
-      {id:1, name:'NHK総合',  ch:'13ch', power:'1kW'},
-      {id:2, name:'NHK教育',  ch:'15ch', power:'1kW'},
-      {id:3, name:'FCT',      ch:'19ch', power:'300W'},
-      {id:4, name:'FTV',      ch:'25ch', power:'300W'},
-      {id:5, name:'KFB',      ch:'22ch', power:'300W'},
-      {id:6, name:'TUF',      ch:'28ch', power:'300W'},
+      {id:1, name:'NHK福島総合',         ch:'13ch', power:'1kW'},
+      {id:2, name:'NHK教育',             ch:'15ch', power:'1kW'},
+      {id:3, name:'福島中央テレビ(FCT)', ch:'19ch', power:'300W'},
+      {id:4, name:'福島放送(KFB)',       ch:'22ch', power:'300W'},
+      {id:5, name:'テレビユー福島(TUF)', ch:'28ch', power:'300W'},
+      {id:6, name:'福島テレビ(FTV)',     ch:'25ch', power:'300W'},
     ]
   },
   yamagata: {
     id:'yamagata', name:'山形', area:'山形市', prefecture:'yamagata',
     lat:38.2555, lon:140.3398, polarization:'水平',
     channels:[
-      {id:1, name:'NHK総合・山形',  ch:'13ch', power:'3kW'},
-      {id:2, name:'NHK教育',       ch:'15ch', power:'3kW'},
-      {id:3, name:'YBC山形放送',   ch:'17ch', power:'3kW'},
-      {id:4, name:'YTS山形テレビ', ch:'21ch', power:'3kW'},
-      {id:5, name:'TUY テレビユー山形',ch:'23ch', power:'3kW'},
-      {id:6, name:'SAY さくらんぼTV',ch:'27ch', power:'3kW'},
+      {id:1, name:'NHK山形総合',           ch:'13ch', power:'3kW'},
+      {id:2, name:'NHK教育',               ch:'15ch', power:'3kW'},
+      {id:3, name:'山形放送(YBC)',          ch:'17ch', power:'3kW'},
+      {id:4, name:'山形テレビ(YTS)',        ch:'21ch', power:'3kW'},
+      {id:5, name:'テレビユー山形(TUY)',    ch:'23ch', power:'3kW'},
+      {id:6, name:'テレビユー山形(TUY)',    ch:'23ch', power:'3kW'},
+      {id:8, name:'さくらんぼTV(SAY)',      ch:'27ch', power:'3kW'},
     ]
   },
   shinjyo: {
     id:'shinjyo', name:'新庄', area:'新庄市', prefecture:'yamagata',
     lat:38.7630, lon:140.3033, polarization:'水平',
     channels:[
-      {id:1, name:'NHK総合',  ch:'13ch', power:'300W'},
-      {id:2, name:'NHK教育',  ch:'15ch', power:'300W'},
-      {id:3, name:'YBC',      ch:'17ch', power:'100W'},
-      {id:4, name:'YTS',      ch:'21ch', power:'100W'},
-      {id:5, name:'TUY',      ch:'23ch', power:'100W'},
-      {id:6, name:'SAY',      ch:'27ch', power:'100W'},
+      {id:1, name:'NHK山形総合',        ch:'13ch', power:'300W'},
+      {id:2, name:'NHK教育',            ch:'15ch', power:'300W'},
+      {id:3, name:'山形放送(YBC)',       ch:'17ch', power:'100W'},
+      {id:4, name:'山形テレビ(YTS)',     ch:'21ch', power:'100W'},
+      {id:5, name:'テレビユー山形(TUY)', ch:'23ch', power:'100W'},
+      {id:8, name:'さくらんぼTV(SAY)',   ch:'27ch', power:'100W'},
     ]
   },
 };
@@ -986,8 +971,6 @@ let soundEnabled = false;
 let audioCtx = null;
 let lastSoundState = null;
 let lastPos = null; // ②歩き補正用
-let lockMode = false;      // 方向ロック
-let lockedHeading = null;  // ロック時の基準ヘッディング
 
 // ============================================================
 // COMPUTED
@@ -1048,14 +1031,6 @@ function getStationName(){
 function getAlignment(){
   const ch = getCorrectedHeading();
   if(ch === null) return null;
-
-  // ロック時：ロック時点の自分の向きを基準に「自分がどれだけズレたか」
-  if(lockMode && lockedHeading !== null){
-    let diff = ((lockedHeading - ch + 540) % 360) - 180;
-    return diff;
-  }
-
-  // 通常：送信所方向を基準
   const mb = getMagneticBearing();
   let diff = ((mb - ch + 540) % 360) - 180;
   return diff;
@@ -1501,35 +1476,6 @@ function playBeep(freq, duration, vol){
     osc.start(ctx.currentTime);
     osc.stop(ctx.currentTime + duration);
   } catch(e){}
-}
-
-// 方向ロックモード
-function toggleLock(){
-  const btn = document.getElementById('lockBtn');
-  if(!lockMode){
-    lockedHeading = getCorrectedHeading(); // 現在の真北補正済みヘッディングを基準に固定
-    lockMode = true;
-    btn.textContent = '🔒 解除';
-    btn.style.background = '#f97316';
-    btn.style.color = '#000';
-  } else {
-    lockMode = false;
-    lockedHeading = null;
-    btn.textContent = '🔓 ロック';
-    btn.style.background = '';
-    btn.style.color = '';
-  }
-  updateCompass();
-}
-
-// ⑤updateSignalHint
-function updateSignalHint(){
-  const val = parseInt(document.getElementById('signalInput').value);
-  const hint = document.getElementById('signalHint');
-  if(isNaN(val)){ hint.textContent = '--'; hint.style.color = 'var(--text3)'; return; }
-  if(val > 60){ hint.textContent = '✔ OK'; hint.style.color = 'var(--emerald)'; }
-  else if(val > 40){ hint.textContent = '△ 微調整'; hint.style.color = 'var(--amber)'; }
-  else { hint.textContent = '✕ 方向ズレ'; hint.style.color = 'var(--red)'; }
 }
 
 function toggleSound(){
