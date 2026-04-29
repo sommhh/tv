@@ -935,11 +935,8 @@ function smoothValue(prev, next, alpha){
 }
 
 function calculateDeclination(lat, lon){
-  // 日本用精度UP版（東北〜関東実測ベース近似）
-  const base = 7.0;
-  const lonCorr = (lon - 140) * 0.05;
-  const latCorr = (lat - 38) * -0.03;
-  return base + lonCorr + latCorr;
+  // 宮城基準固定（7.8°W）のほうが安定・精度高い
+  return 7.8;
 }
 
 function calculateTerrestrialElevation(lat1, lon1, lat2, lon2){
@@ -1047,8 +1044,13 @@ function getCorrectedHeading(){
 
 function calibrateCompass(){
   if(deviceHeading !== null){
-    headingOffset = deviceHeading;
-    alert('端末を8の字にゆっくり振って磁気校正してください。\n完了後は送信所方向に向けて使用してください。');
+    // 差分補正：コンパス誤差（センサー値 − 真の方向）を記録
+    // 送信所選択中なら送信所方向を真値として使う、それ以外は北基準
+    const trueHeading = getMagneticBearing();
+    headingOffset = deviceHeading - trueHeading;
+    alert('端末を8の字にゆっくり振って磁気校正してください。\n完了後は送信所方向に端末を向けてOKを押してください。');
+  } else {
+    alert('コンパスが有効になっていません。');
   }
 }
 
