@@ -13,10 +13,10 @@
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
-  --bg:#070708;--surface:#111113;--surface2:#1a1a1d;
-  --border:#2a2a2e;--border2:#222226;
-  --text:#f0f0f4;--text2:#a0a0a8;--text3:#606068;
-  --orange:#f97316;--orange-dim:rgba(249,115,22,0.12);--orange-border:rgba(249,115,22,0.3);
+  --bg:#0f1117;--surface:#1c1f2a;--surface2:#252836;
+  --border:#363a4a;--border2:#2e3245;
+  --text:#eef0f8;--text2:#b0b4c8;--text3:#7a7f96;
+  --orange:#f97316;--orange-dim:rgba(249,115,22,0.15);--orange-border:rgba(249,115,22,0.4);
   --cyan:#22d3ee;--emerald:#34d399;--amber:#fbbf24;--red:#f87171;--sky:#38bdf8;
 }
 html{scroll-behavior:smooth}
@@ -98,7 +98,7 @@ font-size:13px;font-weight:700;color:var(–text3);transition:all .15s;
 
 /* COMPASS CARD */
 .compass-card{
-background:linear-gradient(180deg,var(–surface) 0%,#000 100%);
+background:linear-gradient(180deg,var(–surface) 0%,#0d1020 100%);
 border:1px solid var(–border);border-radius:32px;padding:32px;
 display:flex;flex-direction:column;align-items:center;position:relative;overflow:hidden;
 }
@@ -157,8 +157,8 @@ background:var(–orange);
 .compass-hub{
 position:absolute;inset:0;margin:auto;
 width:calc(100% - 128px);height:calc(100% - 128px);
-border-radius:50%;background:var(–bg);border:1px solid var(–border);
-box-shadow:0 0 60px rgba(0,0,0,.8);
+border-radius:50%;background:#141726;border:1px solid var(–border);
+box-shadow:0 0 60px rgba(0,0,0,.6);
 display:flex;flex-direction:column;align-items:center;justify-content:center;
 text-align:center;padding:16px;z-index:30;
 }
@@ -169,7 +169,7 @@ text-align:center;padding:16px;z-index:30;
 /* Alignment badge */
 .align-badge{
 position:absolute;bottom:24px;left:50%;transform:translateX(-50%);z-index:40;
-background:rgba(0,0,0,.8);backdrop-filter:blur(8px);
+background:rgba(20,23,38,.92);backdrop-filter:blur(8px);
 padding:6px 12px;border-radius:12px;border:1px solid var(–border);
 white-space:nowrap;pointer-events:none;
 }
@@ -182,7 +182,7 @@ white-space:nowrap;pointer-events:none;
 .compass-divider{width:100%;height:1px;background:var(–border);margin:8px 0 24px}
 .compass-stats{display:flex;gap:16px;width:100%}
 .compass-stat{
-flex:1;background:rgba(7,7,8,.5);border-radius:18px;padding:16px;border:1px solid rgba(42,42,46,.5);
+flex:1;background:rgba(28,31,42,.8);border-radius:18px;padding:16px;border:1px solid var(–border);
 }
 .stat-label{font-size:10px;font-weight:700;color:var(–text3);letter-spacing:.08em;text-transform:uppercase;margin-bottom:4px}
 .stat-val{font-size:20px;font-weight:700}
@@ -228,9 +228,9 @@ display:flex;align-items:center;justify-content:space-between;
 padding:14px;border-radius:18px;border:1px solid;
 transition:all .15s;text-align:left;width:100%;
 }
-.station-item.active{background:rgba(249,115,22,.05);border-color:rgba(249,115,22,.5);box-shadow:0 0 0 1px rgba(249,115,22,.2)}
-.station-item:not(.active){background:rgba(7,7,8,.2);border-color:rgba(42,42,46,.4)}
-.station-item:not(.active):hover{border-color:#3f3f46}
+.station-item.active{background:rgba(249,115,22,.08);border-color:rgba(249,115,22,.5);box-shadow:0 0 0 1px rgba(249,115,22,.2)}
+.station-item:not(.active){background:rgba(28,31,42,.6);border-color:rgba(54,58,74,.6)}
+.station-item:not(.active):hover{border-color:#4a4f64}
 .station-name{font-weight:700;font-size:13px;margin-bottom:2px}
 .station-area{font-size:10px;color:var(–text3);display:flex;align-items:center;gap:4px}
 .station-area svg{width:10px;height:10px;flex-shrink:0}
@@ -244,7 +244,7 @@ padding:16px;border-radius:20px;border:1px solid;transition:all .15s;
 }
 .sat-btn.bs.active{background:rgba(249,115,22,.05);border-color:rgba(249,115,22,.5);box-shadow:0 0 0 1px rgba(249,115,22,.2)}
 .sat-btn.premium.active{background:rgba(14,165,233,.05);border-color:rgba(14,165,233,.5);box-shadow:0 0 0 1px rgba(14,165,233,.2)}
-.sat-btn:not(.active){background:rgba(7,7,8,.5);border-color:var(–border)}
+.sat-btn:not(.active){background:rgba(28,31,42,.8);border-color:var(–border)}
 .sat-btn svg{width:20px;height:20px;margin-bottom:8px}
 .sat-btn.active.bs svg{color:var(–orange)}
 .sat-btn.active.premium svg{color:var(–sky)}
@@ -307,7 +307,7 @@ tbody td{padding:10px 16px;white-space:nowrap}
 @media(min-width:400px){.sat-info-row{flex-direction:row;align-items:center}}
 .sat-azimuth-label,.sat-elev-label{font-size:10px;font-weight:700;color:var(–text3);letter-spacing:.1em;text-transform:uppercase;margin-bottom:4px}
 .sat-azimuth-val,.sat-elev-val{font-size:30px;font-weight:900}
-.sat-elev-guide{position:relative;width:160px;height:128px;background:rgba(0,0,0,.4);border-radius:18px;border:1px solid rgba(42,42,46,.5);overflow:hidden;flex-shrink:0}
+.sat-elev-guide{position:relative;width:160px;height:128px;background:rgba(20,23,38,.8);border-radius:18px;border:1px solid rgba(54,58,74,.6);overflow:hidden;flex-shrink:0}
 .sat-elev-label2{position:absolute;top:8px;left:50%;transform:translateX(-50%);font-size:9px;font-weight:700;color:var(–text3);text-transform:uppercase;white-space:nowrap}
 .sat-desc{font-size:12px;color:var(–text3);line-height:1.7;margin-top:auto}
 .bs-note{
