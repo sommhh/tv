@@ -928,10 +928,15 @@ function calculateSignalScore(dist, power, penalty){
   return penalty ? score - 5 : score;
 }
 
-function smoothValue(prev, next, alpha){
+function smoothValue(prev, next, _alpha){
+  // 可変スムージング：速く動かすと追従、止まると超安定
   let diff = next - prev;
   if(diff > 180) diff -= 360;
   if(diff < -180) diff += 360;
+  const speed = Math.abs(diff);
+  let alpha = 0.02;
+  if(speed > 10) alpha = 0.15;
+  else if(speed > 3) alpha = 0.08;
   return (prev + diff * alpha + 360) % 360;
 }
 
@@ -1034,7 +1039,20 @@ let lastSoundState = null;
 let lastPos = null;
 let lockMode = false;
 let lockedHeading = null;
-let BS_MODE = true; // ONでBS/衛星コンパス互換モード（磁北ベース）
+let BS_MODE = true;
+let autoDecl = true;   // 後方互換（未使用）
+let declMode = null;   // ① null=未判定 / true=補正ON / false=補正OFF
+let lastRaw = null;    // ③④ ノイズカット用
+let stability = 0;     // ② 安定度カウンタ
+
+// ===== カルマンフィルタ（角度対応版）=====
+let kf_angle = 0;
+let kf_bias  = 0;
+let kf_P = [[1,0],[0,1]];
+const Q_angle   = 0.008; // 角度ノイズ（アンテナ用チューニング）
+const Q_bias    = 0.003;
+const R_measure = 3;     // センサーノイズ（アンテナ用チューニング）
+let kf_initialized = false;
 
 // ============================================================
 // COMPUTED
@@ -1059,8 +1077,18 @@ function calibrateCompass(){
     alert('コンパスが有効になっていません。');
     return;
   }
+  // ② 安定時のみ校正許可
+  if(!checkStability(deviceHeading)){
+    alert('まだブレています。端末を静止させてからもう一度押してください。');
+    return;
+  }
   const target = getMagneticBearing();
-  headingOffset = deviceHeading - target;
+  const raw = lastRaw !== null ? lastRaw : deviceHeading;
+  // ③ ±180°問題完全排除
+  headingOffset = ((raw - target + 540) % 360) - 180;
+  // ④ カルマンもリセット（校正直後のブレ防止）
+  kf_angle = deviceHeading;
+  kf_bias  = 0;
   alert('端末を8の字にゆっくり振って磁気校正してください。\n完了後は送信所方向に端末を向けてOKを押すと校正完了です。');
 }
 
@@ -1430,24 +1458,57 @@ function updateMovementHeading(lat, lon){
 }
 
 // ============================================================
+// KALMAN FILTER
+// ============================================================
+function angleDiff(a, b){
+  let d = a - b;
+  if(d > 180)  d -= 360;
+  if(d < -180) d += 360;
+  return d;
+}
+function normalizeAngle(a){ return (a + 360) % 360; }
+
+function kalmanAngle(measured, rate = 0){
+  const dt = 1;
+  // 予測ステップ
+  kf_angle += dt * (rate - kf_bias);
+  kf_P[0][0] += dt * (dt*kf_P[1][1] - kf_P[0][1] - kf_P[1][0] + Q_angle);
+  kf_P[0][1] -= dt * kf_P[1][1];
+  kf_P[1][0] -= dt * kf_P[1][1];
+  kf_P[1][1] += Q_bias * dt;
+  // 観測更新
+  const y  = angleDiff(measured, kf_angle);
+  const S  = kf_P[0][0] + R_measure;
+  const K0 = kf_P[0][0] / S;
+  const K1 = kf_P[1][0] / S;
+  kf_angle += K0 * y;
+  kf_bias  += K1 * y;
+  const P00 = kf_P[0][0], P01 = kf_P[0][1];
+  kf_P[0][0] -= K0 * P00;
+  kf_P[0][1] -= K0 * P01;
+  kf_P[1][0] -= K1 * P00;
+  kf_P[1][1] -= K1 * P01;
+  return normalizeAngle(kf_angle);
+}
+
+// ============================================================
 // HEADING SMOOTHING LOOP
 // ============================================================
-const SMOOTH = 0.03; // 超安定（ブレ激減）
+const SMOOTH = 0.04; // 後方互換（kalman未使用時のフォールバック）
 function startSmoothLoop(){
   if(animFrameId) cancelAnimationFrame(animFrameId);
   function loop(){
     if(rawHeading !== null){
-      if(deviceHeading === null){
+      // ③ カルマン初期化（起動直後のブレ防止）
+      if(!kf_initialized){
+        kf_angle = rawHeading;
         deviceHeading = rawHeading;
+        kf_initialized = true;
       } else {
-        // 微振動ノイズ除去（0.5°未満は無視）
-        const rawDiff = Math.abs(rawHeading - deviceHeading);
-        const wrappedDiff = rawDiff > 180 ? 360 - rawDiff : rawDiff;
-        if(wrappedDiff >= 0.5){
-          deviceHeading = smoothValue(deviceHeading, rawHeading, SMOOTH);
-        }
+        // カルマンフィルタで平滑化（smoothValueを完全置換）
+        deviceHeading = kalmanAngle(rawHeading);
       }
-      // 歩き補正OFF（現場は止まって使う。磁気センサーを信頼する）
+      // 歩き補正OFF（現場は止まって使う）
       updateHUD();
       updateCompass();
       runSoundGuide(getAlignmentDiff());
@@ -1542,19 +1603,80 @@ function requestLocation(){
 // ============================================================
 // COMPASS
 // ============================================================
-function handleOrientation(e){
-  const wk = e.webkitCompassHeading;
-  if(typeof wk === 'number'){
-    rawHeading = wk;
-  } else if(e.alpha !== null){
-    rawHeading = (360 - e.alpha) % 360;
+// ① 起動時1回だけ偏角補正モードを決定（途中切替なし）
+function decideDeclination(raw){
+  if(declMode !== null) return;
+  const test = (raw + 7.8) % 360;
+  const diff = Math.abs(test - raw);
+  declMode = diff > 5; // 5°超なら磁北と判断してON
+  console.log('真北補正:', declMode ? 'ON' : 'OFF');
+}
+
+// ② 安定度チェック（1°未満が10回連続で安定と判定）
+function checkStability(val){
+  if(lastRaw === null) return false;
+  const diff = Math.abs(val - lastRaw);
+  if(diff < 1){ stability++; } else { stability = 0; }
+  return stability > 10;
+}
+
+// ④ ノイズカット強化（20°超は異常値として除外）
+function isValid(raw){
+  if(lastRaw === null){ lastRaw = raw; return true; }
+  let diff = Math.abs(raw - lastRaw);
+  if(diff > 180) diff = 360 - diff;
+  if(diff > 20) return false; // 30→20°に強化
+  lastRaw = raw;
+  return true;
+}
+
+// 傾き補正付きヘッディング取得
+function getHeadingFromEvent(e){
+  // iOS: webkitCompassHeading はそのまま使う（補正済み）
+  if(typeof e.webkitCompassHeading === 'number'){
+    return e.webkitCompassHeading;
   }
+  if(e.alpha === null || e.alpha === undefined) return null;
+
+  // Android / 標準: alpha/beta/gamma から傾き補正
+  const alpha = e.alpha * Math.PI / 180;
+  const beta  = e.beta  * Math.PI / 180;
+  const gamma = e.gamma * Math.PI / 180;
+
+  const cA = Math.cos(alpha), sA = Math.sin(alpha);
+  const cB = Math.cos(beta),  sB = Math.sin(beta);
+  const cG = Math.cos(gamma), sG = Math.sin(gamma);
+
+  const rA = -cA * sG - sA * sB * cG;
+  const rB = -sA * sG + cA * sB * cG;
+
+  let heading = Math.atan2(rA, rB);
+  if(heading < 0) heading += 2 * Math.PI;
+  return heading * 180 / Math.PI;
+}
+
+function handleOrientation(e){
+  const raw = getHeadingFromEvent(e);
+  if(raw === null) return;
+  if(!isValid(raw)) return;
+  decideDeclination(raw); // ① 初回のみ補正モード確定
+  rawHeading = (declMode ? (raw + 7.8) % 360 : raw);
+}
+
+// Android absolute イベント（精度高い機種向け）
+function handleOrientationAbsolute(e){
+  const raw = getHeadingFromEvent(e);
+  if(raw === null) return;
+  if(!isValid(raw)) return;
+  decideDeclination(raw);
+  rawHeading = (declMode ? (raw + 7.8) % 360 : raw);
 }
 
 async function requestCompassPermission(){
   try {
     const perm = await DeviceOrientationEvent.requestPermission();
     if(perm === 'granted'){
+      window.addEventListener('deviceorientationabsolute', handleOrientationAbsolute, true);
       window.addEventListener('deviceorientation', handleOrientation, true);
       document.getElementById('compassBtn').style.display = 'none';
       needsPermission = false;
@@ -1625,6 +1747,8 @@ window.addEventListener('DOMContentLoaded', () => {
       needsPermission = true;
       document.getElementById('compassBtn').style.display = 'inline-block';
     } else {
+      // deviceorientationabsolute: Android精度高い機種優先
+      window.addEventListener('deviceorientationabsolute', handleOrientationAbsolute, true);
       window.addEventListener('deviceorientation', handleOrientation, true);
     }
   }
