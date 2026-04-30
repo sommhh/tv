@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+
 <html lang="ja">
 <head>
 <meta charset="UTF-8">
@@ -37,38 +38,38 @@ input{font-family:inherit}
 @media(min-width:640px){.header{flex-direction:row;align-items:center;justify-content:space-between}}
 .badge-row{display:flex;align-items:center;gap:8px;margin-bottom:4px}
 .badge{padding:2px 8px;border-radius:6px;background:rgba(249,115,22,0.2);color:#fb923c;font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase}
-.ver{color:var(--text3);font-size:12px}
+.ver{color:var(–text3);font-size:12px}
 h1{font-size:clamp(24px,5vw,36px);font-weight:900;letter-spacing:-.03em}
-h1 span{color:var(--orange)}
-.subtitle{color:var(--text2);font-size:12px;margin-top:4px}
+h1 span{color:var(–orange)}
+.subtitle{color:var(–text2);font-size:12px;margin-top:4px}
 .loc-btn{
-  display:flex;align-items:center;gap:8px;padding:10px 16px;
-  border-radius:12px;background:var(--surface);border:1px solid var(--border);
-  font-size:13px;font-weight:600;transition:border-color .15s,transform .1s;
-  white-space:nowrap;
+display:flex;align-items:center;gap:8px;padding:10px 16px;
+border-radius:12px;background:var(–surface);border:1px solid var(–border);
+font-size:13px;font-weight:600;transition:border-color .15s,transform .1s;
+white-space:nowrap;
 }
 .loc-btn:hover{border-color:#3f3f46}
 .loc-btn:active{transform:scale(.96)}
-.loc-btn.success .pin-icon{color:var(--emerald)}
+.loc-btn.success .pin-icon{color:var(–emerald)}
 .loc-btn .spin{animation:spin .8s linear infinite}
 @keyframes spin{to{transform:rotate(360deg)}}
 
 /* HUD */
 .hud{
-  background:rgba(17,17,19,0.6);backdrop-filter:blur(20px);
-  border:1px solid var(--border);border-radius:20px;padding:16px;
-  display:flex;flex-wrap:wrap;align-items:center;gap:24px;margin-bottom:24px;
+background:rgba(17,17,19,0.6);backdrop-filter:blur(20px);
+border:1px solid var(–border);border-radius:20px;padding:16px;
+display:flex;flex-wrap:wrap;align-items:center;gap:24px;margin-bottom:24px;
 }
 .hud-item{display:flex;align-items:center;gap:12px}
-.hud-icon{padding:8px;border-radius:10px;background:var(--surface2);color:var(--text2)}
-.hud-label{font-size:10px;color:var(--text3);font-weight:700;letter-spacing:.1em;text-transform:uppercase;margin-bottom:2px}
+.hud-icon{padding:8px;border-radius:10px;background:var(–surface2);color:var(–text2)}
+.hud-label{font-size:10px;color:var(–text3);font-weight:700;letter-spacing:.1em;text-transform:uppercase;margin-bottom:2px}
 .hud-val{font-size:18px;font-weight:700;font-family:monospace}
-.hud-val.sm{font-size:13px;font-family:monospace;color:var(--text)}
-.hud-divider{width:1px;height:32px;background:var(--border);display:none}
+.hud-val.sm{font-size:13px;font-family:monospace;color:var(–text)}
+.hud-divider{width:1px;height:32px;background:var(–border);display:none}
 @media(min-width:480px){.hud-divider{display:block}}
 .compass-btn{
-  margin-left:auto;padding:6px 12px;border-radius:8px;background:var(--orange);
-  color:#000;font-size:12px;font-weight:700;transition:background .15s;
+margin-left:auto;padding:6px 12px;border-radius:8px;background:var(–orange);
+color:#000;font-size:12px;font-weight:700;transition:background .15s;
 }
 .compass-btn:hover{background:#ea6c10}
 .compass-btn.sound-on{background:#34d399;color:#000}
@@ -76,15 +77,15 @@ h1 span{color:var(--orange)}
 
 /* TABS */
 .tabs{
-  display:flex;padding:4px;background:var(--surface);border:1px solid var(--border);
-  border-radius:20px;width:fit-content;gap:4px;margin-bottom:32px;
+display:flex;padding:4px;background:var(–surface);border:1px solid var(–border);
+border-radius:20px;width:fit-content;gap:4px;margin-bottom:32px;
 }
 .tab-btn{
-  display:flex;align-items:center;gap:8px;padding:10px 20px;border-radius:14px;
-  font-size:13px;font-weight:700;color:var(--text3);transition:all .15s;
+display:flex;align-items:center;gap:8px;padding:10px 20px;border-radius:14px;
+font-size:13px;font-weight:700;color:var(–text3);transition:all .15s;
 }
-.tab-btn.active{background:var(--surface2);color:var(--text);box-shadow:0 2px 12px rgba(0,0,0,.4)}
-.tab-btn:hover:not(.active){color:var(--text2)}
+.tab-btn.active{background:var(–surface2);color:var(–text);box-shadow:0 2px 12px rgba(0,0,0,.4)}
+.tab-btn:hover:not(.active){color:var(–text2)}
 .tab-btn svg{width:16px;height:16px;flex-shrink:0}
 
 /* PANE */
@@ -97,15 +98,15 @@ h1 span{color:var(--orange)}
 
 /* COMPASS CARD */
 .compass-card{
-  background:linear-gradient(180deg,var(--surface) 0%,#000 100%);
-  border:1px solid var(--border);border-radius:32px;padding:32px;
-  display:flex;flex-direction:column;align-items:center;position:relative;overflow:hidden;
+background:linear-gradient(180deg,var(–surface) 0%,#000 100%);
+border:1px solid var(–border);border-radius:32px;padding:32px;
+display:flex;flex-direction:column;align-items:center;position:relative;overflow:hidden;
 }
-.compass-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:rgba(249,115,22,.2)}
+.compass-card::before{content:’’;position:absolute;top:0;left:0;right:0;height:3px;background:rgba(249,115,22,.2)}
 .compass-title{
-  position:absolute;top:24px;left:32px;font-weight:700;font-size:11px;
-  letter-spacing:.1em;color:var(--text3);text-transform:uppercase;
-  display:flex;align-items:center;gap:8px;
+position:absolute;top:24px;left:32px;font-weight:700;font-size:11px;
+letter-spacing:.1em;color:var(–text3);text-transform:uppercase;
+display:flex;align-items:center;gap:8px;
 }
 .compass-title svg{width:12px;height:12px}
 
@@ -114,162 +115,162 @@ h1 span{color:var(--orange)}
 
 /* Outer rotating ring */
 .dial-ring{
-  position:absolute;inset:0;border-radius:50%;
-  border:4px solid var(--border2);
-  transition:transform .2s ease-out;
+position:absolute;inset:0;border-radius:50%;
+border:4px solid var(–border2);
+transition:transform .2s ease-out;
 }
 .cardinal{position:absolute;font-weight:900;font-size:11px;line-height:1}
 .cardinal.N{top:-12px;left:50%;transform:translateX(-50%);color:#f87171}
-.cardinal.S{bottom:-12px;left:50%;transform:translateX(-50%);color:var(--text3)}
-.cardinal.E{right:-12px;top:50%;transform:translateY(-50%);color:var(--text3)}
-.cardinal.W{left:-12px;top:50%;transform:translateY(-50%);color:var(--text3)}
+.cardinal.S{bottom:-12px;left:50%;transform:translateX(-50%);color:var(–text3)}
+.cardinal.E{right:-12px;top:50%;transform:translateY(-50%);color:var(–text3)}
+.cardinal.W{left:-12px;top:50%;transform:translateY(-50%);color:var(–text3)}
 
 /* Ticks rendered via JS canvas */
 #compass-canvas{position:absolute;inset:0;width:100%;height:100%}
 
 /* Device needle (cyan, fixed pointing up) */
 .needle-device{
-  position:absolute;left:50%;top:50%;
-  width:3px;height:42%;
-  transform-origin:bottom center;
-  transform:translateX(-50%) translateY(-100%);
-  background:var(--cyan);border-radius:2px;
-  box-shadow:0 0 12px rgba(34,211,238,.6);
-  z-index:10;
+position:absolute;left:50%;top:50%;
+width:3px;height:42%;
+transform-origin:bottom center;
+transform:translateX(-50%) translateY(-100%);
+background:var(–cyan);border-radius:2px;
+box-shadow:0 0 12px rgba(34,211,238,.6);
+z-index:10;
 }
 
 /* Target pointer (orange, rotates) */
 .needle-target{
-  position:absolute;inset:0;z-index:20;
-  transition:transform .3s ease-out;
+position:absolute;inset:0;z-index:20;
+transition:transform .3s ease-out;
 }
 .needle-target-bar{
-  position:absolute;top:0;left:50%;transform:translateX(-50%);
-  width:6px;height:48%;border-radius:3px;
-  box-shadow:0 0 20px rgba(249,115,22,.4);
-  background:var(--orange);
+position:absolute;top:0;left:50%;transform:translateX(-50%);
+width:6px;height:48%;border-radius:3px;
+box-shadow:0 0 20px rgba(249,115,22,.4);
+background:var(–orange);
 }
-.needle-target-bar.ok{background:var(--emerald)}
-.needle-target-bar.near{background:var(--amber)}
+.needle-target-bar.ok{background:var(–emerald)}
+.needle-target-bar.near{background:var(–amber)}
 
 /* Center hub */
 .compass-hub{
-  position:absolute;inset:0;margin:auto;
-  width:calc(100% - 128px);height:calc(100% - 128px);
-  border-radius:50%;background:var(--bg);border:1px solid var(--border);
-  box-shadow:0 0 60px rgba(0,0,0,.8);
-  display:flex;flex-direction:column;align-items:center;justify-content:center;
-  text-align:center;padding:16px;z-index:30;
+position:absolute;inset:0;margin:auto;
+width:calc(100% - 128px);height:calc(100% - 128px);
+border-radius:50%;background:var(–bg);border:1px solid var(–border);
+box-shadow:0 0 60px rgba(0,0,0,.8);
+display:flex;flex-direction:column;align-items:center;justify-content:center;
+text-align:center;padding:16px;z-index:30;
 }
-.hub-label{font-size:10px;font-weight:700;color:var(--text3);letter-spacing:.1em;text-transform:uppercase;margin-bottom:4px}
+.hub-label{font-size:10px;font-weight:700;color:var(–text3);letter-spacing:.1em;text-transform:uppercase;margin-bottom:4px}
 .hub-bearing{font-size:36px;font-weight:900;letter-spacing:-.04em;line-height:1}
-.hub-dir{margin-top:4px;padding:2px 10px;border-radius:20px;background:rgba(249,115,22,.1);color:var(--orange);font-size:13px;font-weight:700}
+.hub-dir{margin-top:4px;padding:2px 10px;border-radius:20px;background:rgba(249,115,22,.1);color:var(–orange);font-size:13px;font-weight:700}
 
 /* Alignment badge */
 .align-badge{
-  position:absolute;bottom:24px;left:50%;transform:translateX(-50%);z-index:40;
-  background:rgba(0,0,0,.8);backdrop-filter:blur(8px);
-  padding:6px 12px;border-radius:12px;border:1px solid var(--border);
-  white-space:nowrap;pointer-events:none;
+position:absolute;bottom:24px;left:50%;transform:translateX(-50%);z-index:40;
+background:rgba(0,0,0,.8);backdrop-filter:blur(8px);
+padding:6px 12px;border-radius:12px;border:1px solid var(–border);
+white-space:nowrap;pointer-events:none;
 }
 .align-inner{font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:2px 8px;border-radius:6px;border:1px solid transparent}
-.align-inner.ok{background:rgba(52,211,153,.15);color:var(--emerald);border-color:rgba(52,211,153,.3)}
-.align-inner.near{background:rgba(251,191,36,.15);color:var(--amber);border-color:rgba(251,191,36,.3)}
-.align-inner.off{background:rgba(248,113,113,.15);color:var(--red);border-color:rgba(248,113,113,.3)}
-.align-inner.none{background:var(--surface2);color:var(--text3)}
+.align-inner.ok{background:rgba(52,211,153,.15);color:var(–emerald);border-color:rgba(52,211,153,.3)}
+.align-inner.near{background:rgba(251,191,36,.15);color:var(–amber);border-color:rgba(251,191,36,.3)}
+.align-inner.off{background:rgba(248,113,113,.15);color:var(–red);border-color:rgba(248,113,113,.3)}
+.align-inner.none{background:var(–surface2);color:var(–text3)}
 
-.compass-divider{width:100%;height:1px;background:var(--border);margin:8px 0 24px}
+.compass-divider{width:100%;height:1px;background:var(–border);margin:8px 0 24px}
 .compass-stats{display:flex;gap:16px;width:100%}
 .compass-stat{
-  flex:1;background:rgba(7,7,8,.5);border-radius:18px;padding:16px;border:1px solid rgba(42,42,46,.5);
+flex:1;background:rgba(7,7,8,.5);border-radius:18px;padding:16px;border:1px solid rgba(42,42,46,.5);
 }
-.stat-label{font-size:10px;font-weight:700;color:var(--text3);letter-spacing:.08em;text-transform:uppercase;margin-bottom:4px}
+.stat-label{font-size:10px;font-weight:700;color:var(–text3);letter-spacing:.08em;text-transform:uppercase;margin-bottom:4px}
 .stat-val{font-size:20px;font-weight:700}
-.stat-unit{font-size:12px;font-weight:400;color:var(--text3)}
+.stat-unit{font-size:12px;font-weight:400;color:var(–text3)}
 
 /* STATION CARD */
 .station-card{
-  background:var(--surface);border:1px solid var(--border);border-radius:32px;padding:24px 28px 28px;
+background:var(–surface);border:1px solid var(–border);border-radius:32px;padding:24px 28px 28px;
 }
 .station-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px}
 .station-title-row{display:flex;align-items:center;gap:12px}
-.station-icon{padding:12px;border-radius:50%;background:rgba(249,115,22,.1);color:var(--orange)}
+.station-icon{padding:12px;border-radius:50%;background:rgba(249,115,22,.1);color:var(–orange)}
 .station-icon svg{width:20px;height:20px;display:block}
-.station-head-label{font-size:10px;font-weight:700;color:var(--text3);letter-spacing:.1em;text-transform:uppercase}
+.station-head-label{font-size:10px;font-weight:700;color:var(–text3);letter-spacing:.1em;text-transform:uppercase}
 .station-head-title{font-weight:700;font-size:18px}
 .auto-btn{
-  padding:4px 14px;border-radius:20px;font-size:10px;font-weight:900;
-  letter-spacing:.05em;text-transform:uppercase;border:1px solid;
-  transition:all .15s;
+padding:4px 14px;border-radius:20px;font-size:10px;font-weight:900;
+letter-spacing:.05em;text-transform:uppercase;border:1px solid;
+transition:all .15s;
 }
-.auto-btn.on{background:var(--emerald);border-color:#6ee7b7;color:#000}
-.auto-btn.off{background:var(--surface2);border-color:var(--border);color:var(--text3)}
+.auto-btn.on{background:var(–emerald);border-color:#6ee7b7;color:#000}
+.auto-btn.off{background:var(–surface2);border-color:var(–border);color:var(–text3)}
 
 /* PREF FILTERS */
 .pref-filters{display:flex;gap:8px;margin-bottom:16px;overflow-x:auto;padding-bottom:6px;scrollbar-width:none}
 .pref-filters::-webkit-scrollbar{display:none}
 .pref-btn{
-  padding:8px 16px;border-radius:10px;font-size:10px;font-weight:900;
-  letter-spacing:.1em;text-transform:uppercase;border:1px solid;
-  transition:all .15s;white-space:nowrap;
+padding:8px 16px;border-radius:10px;font-size:10px;font-weight:900;
+letter-spacing:.1em;text-transform:uppercase;border:1px solid;
+transition:all .15s;white-space:nowrap;
 }
-.pref-btn.active{background:var(--orange);border-color:#ea6c10;color:#fff;box-shadow:0 4px 16px rgba(249,115,22,.25)}
-.pref-btn:not(.active){background:var(--surface);border-color:var(--border);color:var(--text3)}
-.pref-btn:not(.active):hover{color:var(--text2)}
+.pref-btn.active{background:var(–orange);border-color:#ea6c10;color:#fff;box-shadow:0 4px 16px rgba(249,115,22,.25)}
+.pref-btn:not(.active){background:var(–surface);border-color:var(–border);color:var(–text3)}
+.pref-btn:not(.active):hover{color:var(–text2)}
 
 /* STATION LIST */
-.station-list{max-height:320px;overflow-y:auto;display:flex;flex-direction:column;gap:8px;padding-right:4px;scrollbar-width:thin;scrollbar-color:var(--border) transparent}
+.station-list{max-height:320px;overflow-y:auto;display:flex;flex-direction:column;gap:8px;padding-right:4px;scrollbar-width:thin;scrollbar-color:var(–border) transparent}
 .station-list::-webkit-scrollbar{width:4px}
-.station-list::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px}
+.station-list::-webkit-scrollbar-thumb{background:var(–border);border-radius:2px}
 
 .station-item{
-  display:flex;align-items:center;justify-content:space-between;
-  padding:14px;border-radius:18px;border:1px solid;
-  transition:all .15s;text-align:left;width:100%;
+display:flex;align-items:center;justify-content:space-between;
+padding:14px;border-radius:18px;border:1px solid;
+transition:all .15s;text-align:left;width:100%;
 }
 .station-item.active{background:rgba(249,115,22,.05);border-color:rgba(249,115,22,.5);box-shadow:0 0 0 1px rgba(249,115,22,.2)}
 .station-item:not(.active){background:rgba(7,7,8,.2);border-color:rgba(42,42,46,.4)}
 .station-item:not(.active):hover{border-color:#3f3f46}
 .station-name{font-weight:700;font-size:13px;margin-bottom:2px}
-.station-area{font-size:10px;color:var(--text3);display:flex;align-items:center;gap:4px}
+.station-area{font-size:10px;color:var(–text3);display:flex;align-items:center;gap:4px}
 .station-area svg{width:10px;height:10px;flex-shrink:0}
-.check-icon{color:var(--orange);flex-shrink:0}
+.check-icon{color:var(–orange);flex-shrink:0}
 .check-icon svg{width:16px;height:16px}
 
 .sat-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:16px}
 .sat-btn{
-  display:flex;flex-direction:column;align-items:center;justify-content:center;
-  padding:16px;border-radius:20px;border:1px solid;transition:all .15s;
+display:flex;flex-direction:column;align-items:center;justify-content:center;
+padding:16px;border-radius:20px;border:1px solid;transition:all .15s;
 }
 .sat-btn.bs.active{background:rgba(249,115,22,.05);border-color:rgba(249,115,22,.5);box-shadow:0 0 0 1px rgba(249,115,22,.2)}
 .sat-btn.premium.active{background:rgba(14,165,233,.05);border-color:rgba(14,165,233,.5);box-shadow:0 0 0 1px rgba(14,165,233,.2)}
-.sat-btn:not(.active){background:rgba(7,7,8,.5);border-color:var(--border)}
+.sat-btn:not(.active){background:rgba(7,7,8,.5);border-color:var(–border)}
 .sat-btn svg{width:20px;height:20px;margin-bottom:8px}
-.sat-btn.active.bs svg{color:var(--orange)}
-.sat-btn.active.premium svg{color:var(--sky)}
-.sat-btn:not(.active) svg{color:var(--text3)}
+.sat-btn.active.bs svg{color:var(–orange)}
+.sat-btn.active.premium svg{color:var(–sky)}
+.sat-btn:not(.active) svg{color:var(–text3)}
 .sat-btn-label{font-weight:700;font-size:11px;letter-spacing:-.01em;text-transform:uppercase}
 
 /* SELECTED INFO */
-.sel-info{margin-top:28px;padding-top:28px;border-top:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;gap:12px}
-.sel-label{font-size:10px;font-weight:700;color:var(--text3);letter-spacing:.1em;text-transform:uppercase;margin-bottom:4px}
+.sel-info{margin-top:28px;padding-top:28px;border-top:1px solid var(–border);display:flex;align-items:center;justify-content:space-between;gap:12px}
+.sel-label{font-size:10px;font-weight:700;color:var(–text3);letter-spacing:.1em;text-transform:uppercase;margin-bottom:4px}
 .sel-name{font-size:20px;font-weight:900}
 .sel-meta{display:flex;align-items:center;gap:12px;margin-top:4px}
-.sel-area{font-size:13px;color:var(--text2)}
-.elev-badge{padding:2px 8px;border-radius:6px;background:var(--surface2);border:1px solid var(--border);font-size:10px;font-weight:700;color:var(--orange)}
-.map-link{padding:12px;border-radius:16px;background:var(--surface2);color:var(--text2);transition:all .15s;flex-shrink:0;display:flex}
-.map-link:hover{color:var(--text)}
+.sel-area{font-size:13px;color:var(–text2)}
+.elev-badge{padding:2px 8px;border-radius:6px;background:var(–surface2);border:1px solid var(–border);font-size:10px;font-weight:700;color:var(–orange)}
+.map-link{padding:12px;border-radius:16px;background:var(–surface2);color:var(–text2);transition:all .15s;flex-shrink:0;display:flex}
+.map-link:hover{color:var(–text)}
 .map-link svg{width:20px;height:20px;display:block}
 
 /* TIPS */
 .tips-card{
-  border-radius:28px;padding:24px;display:flex;align-items:flex-start;gap:16px;margin-top:0;
+border-radius:28px;padding:24px;display:flex;align-items:flex-start;gap:16px;margin-top:0;
 }
 .tips-card.warn{background:rgba(249,115,22,.1);border:1px solid rgba(249,115,22,.2)}
 .tips-card.danger{background:rgba(248,113,113,.1);border:1px solid rgba(248,113,113,.2)}
 .tips-icon{padding:8px;border-radius:10px;flex-shrink:0;margin-top:2px}
-.tips-card.warn .tips-icon{background:rgba(249,115,22,.2);color:var(--orange)}
-.tips-card.danger .tips-icon{background:rgba(248,113,113,.2);color:var(--red)}
+.tips-card.warn .tips-icon{background:rgba(249,115,22,.2);color:var(–orange)}
+.tips-card.danger .tips-icon{background:rgba(248,113,113,.2);color:var(–red)}
 .tips-icon svg{width:16px;height:16px;display:block}
 .tips-title{font-size:13px;font-weight:700;margin-bottom:4px}
 .tips-card.warn .tips-title{color:#fed7b2}
@@ -279,60 +280,62 @@ h1 span{color:var(--orange)}
 .tips-card.danger .tips-body{color:rgba(252,165,165,.7)}
 
 /* DETAIL TAB */
-.detail-card{background:var(--surface);border:1px solid var(--border);border-radius:32px;overflow:hidden}
-.detail-head{padding:32px;border-bottom:1px solid var(--border)}
+.detail-card{background:var(–surface);border:1px solid var(–border);border-radius:32px;overflow:hidden}
+.detail-head{padding:32px;border-bottom:1px solid var(–border)}
 .detail-head h3{font-size:24px;font-weight:900;margin-bottom:4px}
-.detail-head p{color:var(--text2);font-size:13px}
+.detail-head p{color:var(–text2);font-size:13px}
 .ch-table{width:100%;border-collapse:collapse;overflow-x:auto;display:block}
-thead{background:var(--bg)}
-thead th{padding:8px 16px;font-size:10px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.1em;white-space:nowrap;text-align:left}
-tbody tr{border-top:1px solid var(--border);transition:background .1s}
+thead{background:var(–bg)}
+thead th{padding:8px 16px;font-size:10px;font-weight:700;color:var(–text3);text-transform:uppercase;letter-spacing:.1em;white-space:nowrap;text-align:left}
+tbody tr{border-top:1px solid var(–border);transition:background .1s}
 tbody tr:hover{background:rgba(42,42,46,.3)}
 tbody td{padding:10px 16px;white-space:nowrap}
-.ch-id{display:flex;align-items:center;justify-content:center;width:32px;height:32px;border-radius:8px;background:var(--surface2);font-family:monospace;font-weight:700;color:var(--orange)}
-.ch-name{font-weight:700;color:var(--text)}
-.ch-ch{font-family:monospace;color:var(--text2)}
-.ch-pwr{font-size:13px;color:var(--text3)}
+.ch-id{display:flex;align-items:center;justify-content:center;width:32px;height:32px;border-radius:8px;background:var(–surface2);font-family:monospace;font-weight:700;color:var(–orange)}
+.ch-name{font-weight:700;color:var(–text)}
+.ch-ch{font-family:monospace;color:var(–text2)}
+.ch-pwr{font-size:13px;color:var(–text3)}
 
 /* BS TAB */
 .bs-grid{display:grid;gap:24px}
 @media(min-width:640px){.bs-grid{grid-template-columns:1fr 1fr}}
-.sat-card{background:var(--surface);border:1px solid var(--border);border-radius:32px;padding:32px;display:flex;flex-direction:column}
+.sat-card{background:var(–surface);border:1px solid var(–border);border-radius:32px;padding:32px;display:flex;flex-direction:column}
 .sat-card-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:32px}
 .sat-card-title{font-size:20px;font-weight:900;display:flex;align-items:center;gap:8px}
 .sat-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
-.sat-area-badge{padding:4px 12px;border-radius:8px;background:var(--surface2);font-size:10px;font-weight:700;color:var(--text3);letter-spacing:.08em;text-transform:uppercase}
+.sat-area-badge{padding:4px 12px;border-radius:8px;background:var(–surface2);font-size:10px;font-weight:700;color:var(–text3);letter-spacing:.08em;text-transform:uppercase}
 .sat-info-row{display:flex;flex-direction:column;gap:24px;margin-bottom:32px}
 @media(min-width:400px){.sat-info-row{flex-direction:row;align-items:center}}
-.sat-azimuth-label,.sat-elev-label{font-size:10px;font-weight:700;color:var(--text3);letter-spacing:.1em;text-transform:uppercase;margin-bottom:4px}
+.sat-azimuth-label,.sat-elev-label{font-size:10px;font-weight:700;color:var(–text3);letter-spacing:.1em;text-transform:uppercase;margin-bottom:4px}
 .sat-azimuth-val,.sat-elev-val{font-size:30px;font-weight:900}
 .sat-elev-guide{position:relative;width:160px;height:128px;background:rgba(0,0,0,.4);border-radius:18px;border:1px solid rgba(42,42,46,.5);overflow:hidden;flex-shrink:0}
-.sat-elev-label2{position:absolute;top:8px;left:50%;transform:translateX(-50%);font-size:9px;font-weight:700;color:var(--text3);text-transform:uppercase;white-space:nowrap}
-.sat-desc{font-size:12px;color:var(--text3);line-height:1.7;margin-top:auto}
+.sat-elev-label2{position:absolute;top:8px;left:50%;transform:translateX(-50%);font-size:9px;font-weight:700;color:var(–text3);text-transform:uppercase;white-space:nowrap}
+.sat-desc{font-size:12px;color:var(–text3);line-height:1.7;margin-top:auto}
 .bs-note{
-  background:rgba(217,119,6,.1);border:1px solid rgba(217,119,6,.2);
-  border-radius:24px;padding:24px;font-size:13px;color:rgba(253,230,138,.8);line-height:1.7;
+background:rgba(217,119,6,.1);border:1px solid rgba(217,119,6,.2);
+border-radius:24px;padding:24px;font-size:13px;color:rgba(253,230,138,.8);line-height:1.7;
 }
 @media(min-width:640px){.bs-note{grid-column:1/3}}
 
 /* FOOTER */
 footer{
-  margin-top:64px;padding-top:32px;border-top:1px solid var(--surface2);
-  display:flex;flex-direction:column;align-items:center;justify-content:space-between;gap:16px;
-  color:var(--text3);font-size:12px;font-weight:500;
+margin-top:64px;padding-top:32px;border-top:1px solid var(–surface2);
+display:flex;flex-direction:column;align-items:center;justify-content:space-between;gap:16px;
+color:var(–text3);font-size:12px;font-weight:500;
 }
 @media(min-width:640px){footer{flex-direction:row}}
 .footer-right{display:flex;align-items:center;gap:16px}
-.footer-dot{width:4px;height:4px;border-radius:50%;background:var(--border)}
+.footer-dot{width:4px;height:4px;border-radius:50%;background:var(–border)}
 
 /* SVG icons inline */
 svg{display:inline-block}
 </style>
+
 </head>
 <body>
 <div class="wrap">
 
   <!-- HEADER -->
+
   <header class="header">
     <div>
       <div class="badge-row">
@@ -352,6 +355,7 @@ svg{display:inline-block}
   </header>
 
   <!-- HUD -->
+
   <div class="hud">
     <div class="hud-item">
       <div class="hud-icon">
@@ -374,12 +378,14 @@ svg{display:inline-block}
     </div>
     <div style="margin-left:auto;display:flex;gap:8px;align-items:center">
       <button class="compass-btn" id="compassBtn" style="display:none" onclick="requestCompassPermission()">コンパスを有効化</button>
-      <button class="compass-btn" id="calibBtn" onclick="calibrateCompass()" title="現在の向きをゼロ基準にリセット">⊕ 校正</button>
+      <button class="compass-btn" id="calibBtn" onclick="calibrateCompass()" title="送信所を向いた状態で押す">⊕ 校正</button>
+      <button class="compass-btn" id="lockBtn" onclick="toggleLock()" title="現在の向きを固定（ブレ防止）">🔓 固定</button>
       <button class="compass-btn sound-off" id="soundBtn" onclick="toggleSound()">🔇 音 OFF</button>
     </div>
   </div>
 
   <!-- TABS -->
+
   <div class="tabs">
     <button class="tab-btn active" data-tab="main" onclick="switchTab('main')">
       <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path stroke-linecap="round" stroke-linejoin="round" d="M16.24 7.76l-2.12 6.36-6.36 2.12 2.12-6.36 6.36-2.12z"/></svg>
@@ -396,107 +402,112 @@ svg{display:inline-block}
   </div>
 
   <!-- PANE: MAIN -->
+
   <div class="pane active" id="pane-main">
     <div class="main-grid">
 
-      <!-- COMPASS CARD -->
-      <div class="compass-card">
-        <div class="compass-title">
-          <svg width="12" height="12" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7"/></svg>
-          Real-time Compass
-        </div>
+```
+  <!-- COMPASS CARD -->
+  <div class="compass-card">
+    <div class="compass-title">
+      <svg width="12" height="12" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7"/></svg>
+      Real-time Compass
+    </div>
 
-        <div class="dial-wrap" id="dialWrap">
-          <div class="dial-ring" id="dialRing">
-            <span class="cardinal N">N</span>
-            <span class="cardinal S">S</span>
-            <span class="cardinal E">E</span>
-            <span class="cardinal W">W</span>
-          </div>
-          <canvas id="compass-canvas"></canvas>
-          <div class="needle-device" id="needleDevice"></div>
-          <div class="needle-target" id="needleTarget">
-            <div class="needle-target-bar" id="needleBar"></div>
-          </div>
-          <div class="compass-hub">
-            <div class="hub-label">Target Bearing</div>
-            <div class="hub-bearing" id="hubBearing">0.0°</div>
-            <div class="hub-dir" id="hubDir">南</div>
-          </div>
-          <div class="align-badge">
-            <div class="align-inner none" id="alignBadge">-- --</div>
-          </div>
-        </div>
-
-        <div class="compass-divider"></div>
-        <div class="compass-stats">
-          <div class="compass-stat">
-            <div class="stat-label">Distance</div>
-            <div class="stat-val" id="statDist">--<span class="stat-unit"> km</span></div>
-          </div>
-          <div class="compass-stat">
-            <div class="stat-label">Pol.</div>
-            <div class="stat-val" id="statPol">水平</div>
-          </div>
-        </div>
+    <div class="dial-wrap" id="dialWrap">
+      <div class="dial-ring" id="dialRing">
+        <span class="cardinal N">N</span>
+        <span class="cardinal S">S</span>
+        <span class="cardinal E">E</span>
+        <span class="cardinal W">W</span>
       </div>
+      <canvas id="compass-canvas"></canvas>
+      <div class="needle-device" id="needleDevice"></div>
+      <div class="needle-target" id="needleTarget">
+        <div class="needle-target-bar" id="needleBar"></div>
+      </div>
+      <div class="compass-hub">
+        <div class="hub-label">Target Bearing</div>
+        <div class="hub-bearing" id="hubBearing">0.0°</div>
+        <div class="hub-dir" id="hubDir">南</div>
+      </div>
+      <div class="align-badge">
+        <div class="align-inner none" id="alignBadge">-- --</div>
+      </div>
+    </div>
 
-      <!-- STATION CONTROL -->
-      <div style="display:flex;flex-direction:column;gap:24px">
-        <div class="station-card">
-          <div class="station-header">
-            <div class="station-title-row">
-              <div class="station-icon">
-                <svg width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="15" rx="2" ry="2"/><path stroke-linecap="round" stroke-linejoin="round" d="M17 2l-5 5-5-5"/></svg>
-              </div>
-              <div>
-                <div class="station-head-label">Station Select</div>
-                <div class="station-head-title">局選択</div>
-              </div>
-            </div>
-            <button class="auto-btn off" id="autoBtn" onclick="toggleAuto()">Auto</button>
-          </div>
-
-          <div class="pref-filters" id="prefFilters">
-            <button class="pref-btn active" data-pref="miyagi" onclick="setPref('miyagi')">宮城</button>
-            <button class="pref-btn" data-pref="fukushima" onclick="setPref('fukushima')">福島</button>
-            <button class="pref-btn" data-pref="yamagata" onclick="setPref('yamagata')">山形</button>
-            <button class="pref-btn" data-pref="satellite" onclick="setPref('satellite')">衛星</button>
-          </div>
-
-          <div class="station-list" id="stationList"></div>
-
-          <!-- SELECTED INFO -->
-          <div class="sel-info">
-            <div>
-              <div class="sel-label">Selected Info</div>
-              <div class="sel-name" id="selName">大年寺山</div>
-              <div class="sel-meta">
-                <span class="sel-area" id="selArea">仙台市太白区</span>
-                <span class="elev-badge" id="elevBadge" style="display:none"></span>
-              </div>
-            </div>
-            <a class="map-link" id="mapLink" href="#" target="_blank" rel="noreferrer">
-              <svg width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
-            </a>
-          </div>
-        </div>
-
-        <!-- TIPS CARD -->
-        <div class="tips-card warn" id="tipsCard">
-          <div class="tips-icon">
-            <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4m0 4h.01"/></svg>
-          </div>
-          <div>
-            <div class="tips-title" id="tipsTitle">アンテナ工事のコツ</div>
-            <div class="tips-body" id="tipsBody">送信所が見えない場合は、建物の反射波を利用することも検討してください。調整は5度ずつ、ゆっくり動かしながらレベルを確認するのが基本です。</div>
-          </div>
-        </div>
+    <div class="compass-divider"></div>
+    <div class="compass-stats">
+      <div class="compass-stat">
+        <div class="stat-label">Distance</div>
+        <div class="stat-val" id="statDist">--<span class="stat-unit"> km</span></div>
+      </div>
+      <div class="compass-stat">
+        <div class="stat-label">Pol.</div>
+        <div class="stat-val" id="statPol">水平</div>
       </div>
     </div>
   </div>
 
+  <!-- STATION CONTROL -->
+  <div style="display:flex;flex-direction:column;gap:24px">
+    <div class="station-card">
+      <div class="station-header">
+        <div class="station-title-row">
+          <div class="station-icon">
+            <svg width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="15" rx="2" ry="2"/><path stroke-linecap="round" stroke-linejoin="round" d="M17 2l-5 5-5-5"/></svg>
+          </div>
+          <div>
+            <div class="station-head-label">Station Select</div>
+            <div class="station-head-title">局選択</div>
+          </div>
+        </div>
+        <button class="auto-btn off" id="autoBtn" onclick="toggleAuto()">Auto</button>
+      </div>
+
+      <div class="pref-filters" id="prefFilters">
+        <button class="pref-btn active" data-pref="miyagi" onclick="setPref('miyagi')">宮城</button>
+        <button class="pref-btn" data-pref="fukushima" onclick="setPref('fukushima')">福島</button>
+        <button class="pref-btn" data-pref="yamagata" onclick="setPref('yamagata')">山形</button>
+        <button class="pref-btn" data-pref="satellite" onclick="setPref('satellite')">衛星</button>
+      </div>
+
+      <div class="station-list" id="stationList"></div>
+
+      <!-- SELECTED INFO -->
+      <div class="sel-info">
+        <div>
+          <div class="sel-label">Selected Info</div>
+          <div class="sel-name" id="selName">大年寺山</div>
+          <div class="sel-meta">
+            <span class="sel-area" id="selArea">仙台市太白区</span>
+            <span class="elev-badge" id="elevBadge" style="display:none"></span>
+          </div>
+        </div>
+        <a class="map-link" id="mapLink" href="#" target="_blank" rel="noreferrer">
+          <svg width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+        </a>
+      </div>
+    </div>
+
+    <!-- TIPS CARD -->
+    <div class="tips-card warn" id="tipsCard">
+      <div class="tips-icon">
+        <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4m0 4h.01"/></svg>
+      </div>
+      <div>
+        <div class="tips-title" id="tipsTitle">アンテナ工事のコツ</div>
+        <div class="tips-body" id="tipsBody">送信所が見えない場合は、建物の反射波を利用することも検討してください。調整は5度ずつ、ゆっくり動かしながらレベルを確認するのが基本です。</div>
+      </div>
+    </div>
+  </div>
+</div>
+```
+
+  </div>
+
   <!-- PANE: DETAIL -->
+
   <div class="pane" id="pane-detail">
     <div class="detail-card">
       <div class="detail-head">
@@ -517,6 +528,7 @@ svg{display:inline-block}
   </div>
 
   <!-- PANE: BS -->
+
   <div class="pane" id="pane-bs">
     <div class="bs-grid">
       <div class="sat-card" id="satCardBs">
@@ -582,6 +594,7 @@ svg{display:inline-block}
   </div>
 
   <!-- FOOTER -->
+
   <footer>
     <p>© 2026 東北アンテナ方向チェッカー (宮城・福島・山形)</p>
     <div class="footer-right">
@@ -1030,28 +1043,37 @@ let animFrameId = null;
 let soundEnabled = false;
 let audioCtx = null;
 let lastSoundState = null;
-let lastPos = null; // ②歩き補正用
+let lastPos = null;
+let lockMode = false;
+let lockedHeading = null;
+let BS_MODE = true; // ONでBS/衛星コンパス互換モード（磁北ベース）
 
 // ============================================================
 // COMPUTED
 // ============================================================
 function getCorrectedHeading(){
+  // ロック中は固定値を返す
+  if(lockedHeading !== null) return lockedHeading;
   if(deviceHeading === null) return null;
+
+  if(BS_MODE){
+    // 衛星モード：磁北そのまま（偏角加算しない）
+    return (deviceHeading - headingOffset + 360) % 360;
+  }
+
+  // 地デジモード：磁北→真北変換
   const decl = getDecl();
-  // 磁北 → 真北変換 + キャリブレーションオフセット除去
   return (deviceHeading + decl - headingOffset + 360) % 360;
 }
 
 function calibrateCompass(){
-  if(deviceHeading !== null){
-    // 差分補正：コンパス誤差（センサー値 − 真の方向）を記録
-    // 送信所選択中なら送信所方向を真値として使う、それ以外は北基準
-    const trueHeading = getMagneticBearing();
-    headingOffset = deviceHeading - trueHeading;
-    alert('端末を8の字にゆっくり振って磁気校正してください。\n完了後は送信所方向に端末を向けてOKを押してください。');
-  } else {
+  if(deviceHeading === null){
     alert('コンパスが有効になっていません。');
+    return;
   }
+  const target = getMagneticBearing();
+  headingOffset = deviceHeading - target;
+  alert('端末を8の字にゆっくり振って磁気校正してください。\n完了後は送信所方向に端末を向けてOKを押すと校正完了です。');
 }
 
 function getDecl(){ return calculateDeclination(userLoc.lat, userLoc.lon); }
@@ -1063,10 +1085,26 @@ function getSatInfo(){
 }
 
 function getMagneticBearing(){
-  if(selectedKey === 'bs110') return getSatInfo().bs.azimuth;
-  if(selectedKey === 'premium') return getSatInfo().premium.azimuth;
+  if(selectedKey === 'bs110'){
+    const sat = calcSatellite(userLoc.lat, userLoc.lon, SATELLITES.bs.lon);
+    if(BS_MODE){
+      // 真北→磁北変換（コンパスと同じ基準に揃える）
+      const decl = getDecl();
+      return (sat.azimuth - decl + 360) % 360;
+    }
+    return sat.azimuth;
+  }
+  if(selectedKey === 'premium'){
+    const sat = calcSatellite(userLoc.lat, userLoc.lon, SATELLITES.premium.lon);
+    if(BS_MODE){
+      const decl = getDecl();
+      return (sat.azimuth - decl + 360) % 360;
+    }
+    return sat.azimuth;
+  }
   const st = STATIONS[selectedKey];
   if(!st) return 0;
+  // 地デジは真北基準のまま（getCorrectedHeadingも真北で比較）
   return calculateBearing(userLoc.lat, userLoc.lon, st.lat, st.lon);
 }
 
@@ -1092,9 +1130,34 @@ function getStationName(){
 function getAlignment(){
   const ch = getCorrectedHeading();
   if(ch === null) return null;
+
+  // ロックモード：固定した向きからのズレを返す
+  if(lockMode && lockedHeading !== null){
+    let diff = ((lockedHeading - ch + 540) % 360) - 180;
+    return diff;
+  }
+
   const mb = getMagneticBearing();
   let diff = ((mb - ch + 540) % 360) - 180;
   return diff;
+}
+
+function toggleLock(){
+  const btn = document.getElementById('lockBtn');
+  if(lockedHeading === null){
+    lockedHeading = getCorrectedHeading(); // 現在値を固定
+    lockMode = true;
+    btn.textContent = '🔒 解除';
+    btn.style.background = '#f97316';
+    btn.style.color = '#000';
+  } else {
+    lockedHeading = null;
+    lockMode = false;
+    btn.textContent = '🔓 固定';
+    btn.style.background = '';
+    btn.style.color = '';
+  }
+  updateCompass();
 }
 
 function getAlignmentDiff(){
@@ -1381,7 +1444,7 @@ function updateMovementHeading(lat, lon){
 // ============================================================
 // HEADING SMOOTHING LOOP
 // ============================================================
-const SMOOTH = 0.08; // ローパス強め（iPhoneブレ対策）
+const SMOOTH = 0.03; // 超安定（ブレ激減）
 function startSmoothLoop(){
   if(animFrameId) cancelAnimationFrame(animFrameId);
   function loop(){
@@ -1389,18 +1452,14 @@ function startSmoothLoop(){
       if(deviceHeading === null){
         deviceHeading = rawHeading;
       } else {
-        // ①微振動ノイズ除去
+        // 微振動ノイズ除去（0.5°未満は無視）
         const rawDiff = Math.abs(rawHeading - deviceHeading);
         const wrappedDiff = rawDiff > 180 ? 360 - rawDiff : rawDiff;
         if(wrappedDiff >= 0.5){
           deviceHeading = smoothValue(deviceHeading, rawHeading, SMOOTH);
         }
       }
-      // ②歩き補正ハイブリッド（GPS進行方向 0.3 / コンパス 0.7 合成）
-      const moveH = updateMovementHeading(userLoc.lat, userLoc.lon);
-      if(moveH !== null){
-        deviceHeading = smoothValue(deviceHeading, moveH, 0.3);
-      }
+      // 歩き補正OFF（現場は止まって使う。磁気センサーを信頼する）
       updateHUD();
       updateCompass();
       runSoundGuide(getAlignmentDiff());
@@ -1591,5 +1650,6 @@ window.addEventListener('DOMContentLoaded', () => {
   startSmoothLoop();
 });
 </script>
+
 </body>
 </html>
